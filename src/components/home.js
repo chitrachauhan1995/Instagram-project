@@ -1,17 +1,24 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {toast} from "react-toastify";
 import {useCreatePostMutation, useGetFeedPostQuery} from "../services/posts";
+import ReactPaginate from "react-paginate";
 
 const Home = () => {
-    const {data, error, isLoading} = useGetFeedPostQuery();
+    const [page, setPage] = useState(1);
+    const { data, isLoading, error } = useGetFeedPostQuery({ page, perPage: 6 })
     const [createUserPost] = useCreatePostMutation();
 
+    const [posts, setPosts] = useState({data: [], total: 0});
     const [modal, setModal] = useState(false);
     const [formValues, setFormValues] = useState();
     const [formErrors, setFormErrors] = useState({});
     const [imagePreview, setImagePreview] = useState('')
     const [file, setFile] = useState('')
     const [base64, setBase64] = useState('')
+
+    useEffect(() => {
+        setPosts(data?.data);
+    }, [data])
 
     if (isLoading) {
         return <div className="vh-100 vw-100 d-flex align-items-center justify-content-center">Loading...</div>;
@@ -21,6 +28,9 @@ const Home = () => {
     }
     if (error) return <div>An error has occurred!</div>;
 
+    const handlePageChange = (event) => {
+        setPage(event.selected + 1);
+    };
 
     const toggleModal = () => {
         setModal(!modal);
@@ -89,7 +99,7 @@ const Home = () => {
             </div>
             <div className="feed-container">
                 {
-                    data?.data?.data?.map((post, index) => (
+                    posts?.data?.map((post, index) => (
                         <form className="login-form" key={index}>
                             <div className="login-form-content">
                                 <div className="card-body text-center">
@@ -107,6 +117,18 @@ const Home = () => {
                     ))
                 }
             </div>
+            <ReactPaginate
+                pageCount={Math.ceil(posts?.total / 6)}
+                onPageChange={handlePageChange}
+                containerClassName={'pagination'}
+                pageClassName={'page-item'}
+                pageLinkClassName={'page-link'}
+                previousClassName={'page-item'}
+                previousLinkClassName={'page-link'}
+                nextClassName={'page-item'}
+                nextLinkClassName={'page-link'}
+                activeClassName={'active'}
+            />
             {modal && (
                 <div className="modal" role="dialog" aria-labelledby="exampleModalLabel"
                      aria-hidden="true">

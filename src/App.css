@@ -140,6 +140,38 @@ label {
     cursor: pointer;
 }
 
+.pagination {
+    display: flex;
+    justify-content: end;
+    margin-top: 20px;
+}
+
+.page-item {
+    display: inline-block;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    cursor: pointer;
+}
+
+.page-item:hover {
+    background-color: #e6e6e6;
+}
+
+.page-item.active {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.page-item.disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+}
+
+.page-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
 .pagination > li {
     list-style: none;
 }
