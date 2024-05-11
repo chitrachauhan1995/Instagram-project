@@ -1,38 +1,171 @@
 .App {
-  text-align: center;
+    background-color: white;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.feed-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.login-form {
+    width: 420px;
+    box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    border-radius: 8px;
+    background-color: white;
+    margin: 4px;
 }
 
-.App-link {
-  color: #61dafb;
+.login-form-content {
+    padding-left: 12%;
+    padding-right: 12%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.login-form-title {
+    text-align: center;
+    margin-bottom: 1em;
+    font-size: 24px;
+    color: rgb(34, 34, 34);
+    font-weight: 800;
+}
+
+label {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgb(34, 34, 34);
+}
+
+.mid {
+    background-color: aqua;
+    display: inline-block;
+    width: 100%;
+    margin: auto;
+}
+
+.navbar {
+    display: inline-block;
+}
+
+
+.navbar li {
+
+    list-style: none;
+    display: inline-block;
+
+    margin: auto;
+}
+
+.navbar li a {
+    text-decoration: none;
+    color: rgb(29, 25, 231);
+    font-size: 18px;
+    padding: 8px 20px;
+}
+
+.navbar li a:hover {
+    color: rgb(151, 7, 247);
+    border: darkmagenta;
+    border-radius: 2px;
+    font-size: 20px;
+}
+
+.navbar li a:active {
+    background-color: deepskyblue;
+    border-radius: 5px;
+}
+
+.right {
+    background-color: aqua;
+    display: inline-block;
+    width: 8%;
+    font-size: 18px;
+    padding: 18px 26px;
+    color: #1d19e7;
+}
+
+.right a {
+    text-decoration: none;
+}
+
+.right:hover {
+    font-weight: bolder;
+}
+
+.left {
+    background-color: aqua;
+    display: inline-block;
+    width: 17%;
+    font-size: 18px;
+    padding: 18px 17px;
+    color: #1d19e7;
+}
+
+.left a {
+    text-decoration: none;
+}
+
+.left:hover {
+    font-weight: bolder;
+}
+
+.img-size {
+    width: 100px !important;
+    height: 100px !important;
+}
+
+.modal {
+    display: block !important;
+}
+
+.modal-dialog {
+    box-shadow: rgb(0 0 0 / 50%) 1px 1px 10px;
+}
+
+.modal-content {
+    border: none !important;
+    border-radius: 0 !important;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.pagination > li {
+    list-style: none;
+}
+
+.pagination > li > a,
+.pagination > li > span {
+    float: left;
+    padding: 8px 20px;
+    line-height: 1.5;
+    border: 1px solid #ddd;
+    margin-left: -1px;
+}
+
+.pagination > li.active > a {
+    color: #fff;
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.pagination > li > a:hover {
+    background-color: #0d6efd;
+    color: white;
+    cursor: pointer;
+}
+
+.pagination > li:first-child > a,
+.pagination > li:first-child > span {
+    margin-left: 0;
 }
