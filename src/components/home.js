@@ -1,49 +1,17 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {toast} from "react-toastify";
 import {useCreatePostMutation, useGetFeedPostQuery} from "../services/posts";
-import ReactPaginate from "react-paginate";
 
 const Home = () => {
-    const [pageCount, setPageCount] = useState(1);
-    const [page, setPage] = useState(1);
-    const {data, error, isLoading} = useGetFeedPostQuery({page: pageCount, perPage: 6});
+    const {data, error, isLoading} = useGetFeedPostQuery();
     const [createUserPost] = useCreatePostMutation();
 
-    // const [posts, setPosts] = useState([]);
     const [modal, setModal] = useState(false);
     const [formValues, setFormValues] = useState();
     const [formErrors, setFormErrors] = useState({});
     const [imagePreview, setImagePreview] = useState('')
     const [file, setFile] = useState('')
     const [base64, setBase64] = useState('')
-    const [imagesOffset, setImagesOffset] = useState(0);
-
-  /*  useEffect(() => {
-        const endOffset = imagesOffset + data?.data?.total;
-        // setPosts(data?.data?.data.slice(imagesOffset, endOffset));
-        // if(posts?.length) {
-        setPosts(posts?.length ? posts.concat(data?.data?.data) : data?.data?.data);
-            setPageCount(Math.ceil(data?.data?.total / data?.data?.data.length));
-            // console.log(Math.ceil( data?.data?.total / data?.data?.data.length))
-        // }
-    }, [data])*/
-
-    useEffect(() => {
-        if(data) {
-
-        setPageCount(Math.ceil(data?.data?.total / data?.data?.data.length));
-        console.log('posts?.data?.total', data?.data?.total, data?.data?.data)
-        }
-    }, [])
-
-
-    const handlePageClick = (event) => {
-        console.log('event', event)
-        setPage(event.selected + 1);
-      /*  const newOffset = (event.selected * data?.data?.total) % posts?.length;
-        console.log('newOffset', newOffset)
-        setImagesOffset(newOffset);*/
-    };
 
     if (isLoading) {
         return <div className="vh-100 vw-100 d-flex align-items-center justify-content-center">Loading...</div>;
@@ -76,7 +44,7 @@ const Home = () => {
                 payload.filePath = base64;
             }
             const response = await createUserPost(payload);
-            if (response.data.status == 'success') {
+            if (response.data.status === 'success') {
                 setModal(!modal);
                 toast.success('successfully posted!');
                 setFormValues(null);
@@ -139,27 +107,6 @@ const Home = () => {
                     ))
                 }
             </div>
-            <div className="pagination my-2 float-end d-flex justify-content-end">
-                <ReactPaginate
-                    breakLabel="..."
-                    nextLabel="next >"
-                    onPageChange={(e) => handlePageClick(e)}
-                    pageRangeDisplayed={5}
-                    pageCount={pageCount}
-                    previousLabel="< previous"
-                    renderOnZeroPageCount={null}
-                    breakClassName={"page-item"}
-                    breakLinkClassName={"page-link"}
-                    containerClassName={"pagination"}
-                    pageClassName={"page-item"}
-                    pageLinkClassName={"page-link"}
-                    previousClassName={"page-item"}
-                    previousLinkClassName={"page-link"}
-                    nextClassName={"page-item"}
-                    nextLinkClassName={"page-link"}
-                    activeClassName={"active"}
-                />
-            </div>
             {modal && (
                 <div className="modal" role="dialog" aria-labelledby="exampleModalLabel"
                      aria-hidden="true">
@@ -207,7 +154,8 @@ const Home = () => {
                                                 onChange={photoUpload}
                                                 src={imagePreview}
                                             />
-                                            {imagePreview && <img src={imagePreview} width='100' height='100'/>}
+                                            {imagePreview &&
+                                            <img alt="img" src={imagePreview} width='100' height='100'/>}
                                         </div>
                                     </div>
                                     <div className="form-group mt-3">

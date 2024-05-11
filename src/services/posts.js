@@ -5,8 +5,9 @@ export const postsApi = createApi({
     reducerPath: 'postsApi',
     refetchOnFocus: true,
     refetchOnReconnect: true,
-    baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:5000/',
-        prepareHeaders: (headers, { getState }) => {
+    baseQuery: fetchBaseQuery({
+        baseUrl: 'http://localhost:5000/',
+        prepareHeaders: (headers, {getState}) => {
             headers.set("Access-Control-Allow-Origin", "*");
             headers.set("Accept", "application/json");
             headers.set("mode", 'no-cors');
@@ -15,7 +16,8 @@ export const postsApi = createApi({
                 headers.set("authorization", `Bearer ${token}`);
             }
             return headers
-        }}),
+        }
+    }),
     tagTypes: ['posts'],
     endpoints: (builder) => ({
         createPost: builder.mutation({
@@ -27,8 +29,9 @@ export const postsApi = createApi({
             invalidatesTags: ['posts'],
             async onQueryStarted(
                 arg,
-                { dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry }
-            ) {},
+                {dispatch, getState, queryFulfilled, requestId, extra, getCacheEntry}
+            ) {
+            },
             async onCacheEntryAdded(
                 arg,
                 {
@@ -40,11 +43,12 @@ export const postsApi = createApi({
                     cacheDataLoaded,
                     getCacheEntry,
                 }
-            ) {},
+            ) {
+            },
         }),
         getFeedPost: builder.query({
             query: (query) => ({
-                url: `/posts/get-feed-post?page=${query.page ? query.page : 1}&perPage=${query.perPage}`,
+                url: `/posts/get-feed-post`,
                 method: 'GET',
             }),
             providesTags: ['posts']

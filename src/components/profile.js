@@ -13,7 +13,7 @@ export default function Profile() {
             const user = localStorage.getItem('currentUser');
             if (user) {
                 const currentUser = JSON.parse(user);
-                setUser(data?.data?.find((user) => user.email == currentUser.email));
+                setUser(data?.data?.find((user) => user.email === currentUser.email));
             }
         }
     }, [data])
@@ -25,7 +25,7 @@ export default function Profile() {
 
     const validate = (values) => {
         const errors = {};
-        const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+        const regex = /^[\w-]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
         if (!values.firstname) {
             errors.firstname = "First Name is required!";
@@ -45,14 +45,14 @@ export default function Profile() {
         setUser({...user, [name]: value});
     };
 
-    const updateProfile = async(e) => {
+    const updateProfile = async (e) => {
         e.preventDefault();
         const errors = validate(user)
         setFormErrors(errors);
         if (!Object.keys(errors)?.length) {
             localStorage.setItem('currentUser', JSON.stringify(user));
             const response = await updateUserProfile(user);
-            if(response.data.status == 'success') {
+            if (response.data.status === 'success') {
                 toast.success('Profile updated!')
             }
         }

@@ -1,9 +1,9 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {toast} from "react-toastify";
 import useToken from "../useToken";
-import {loginUser, signupUser, userSelector} from "../services/authSlice";
+import {loginUser, signupUser} from "../services/authSlice";
 
 export default function SignIn() {
     let [authMode, setAuthMode] = useState("signin");

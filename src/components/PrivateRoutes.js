@@ -5,7 +5,6 @@ import Navbar from "./navbar";
 
 const PrivateRoutes = () => {
     const {token} = useToken();
-    console.log('token in private routes', token)
     return token ? <><Navbar/><Outlet/></> : <Navigate to="/"/>;
 };
 
