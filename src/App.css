@@ -2,6 +2,11 @@
     background-color: white;
 }
 
+.feed-main-container {
+    background-color: #dee2e6;
+    padding-left: 10%;
+}
+
 .form-container {
     display: flex;
     justify-content: center;
@@ -12,8 +17,13 @@
 
 .feed-container {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     justify-content: center;
+}
+
+.postgram {
+    color: #C13584;
+    text-transform: uppercase;
 }
 
 .login-form {
@@ -46,7 +56,7 @@ label {
 }
 
 .mid {
-    background-color: aqua;
+    background-color: rgb(240, 248, 255);
     display: inline-block;
     width: 100%;
     margin: auto;
@@ -54,6 +64,7 @@ label {
 
 .navbar {
     display: inline-block;
+    padding: 0.5rem 0.5rem 0.5rem 10% !important;
 }
 
 
@@ -119,8 +130,8 @@ label {
 }
 
 .img-size {
-    width: 100px !important;
-    height: 100px !important;
+    width: 100% !important;
+    height: 100% !important;
 }
 
 .modal {
@@ -200,4 +211,24 @@ label {
 .pagination > li:first-child > a,
 .pagination > li:first-child > span {
     margin-left: 0;
+}
+
+.input-group {
+    width: auto !important;
+}
+
+.form-control:focus {
+    box-shadow: none !important;
+    border-color: #dee2e6 !important;
+}
+
+.post-card {
+    width: 600px;
+    height: 600px;
+    box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    border-radius: 8px;
+    background-color: white;
+    margin: 4px;
 }

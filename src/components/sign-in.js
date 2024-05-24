@@ -43,7 +43,7 @@ export default function SignIn() {
             setFormErrors({});
             if (authMode == "signin") {
                 const {payload} = await dispatch(loginUser(formValues));
-                if (payload.success) {
+                if (payload?.success) {
                     toast.success('Login successful!')
                     setToken(payload.data.accessToken);
                     localStorage.setItem('currentUser', JSON.stringify(payload.data));
@@ -52,7 +52,7 @@ export default function SignIn() {
             } else {
                 setAuthMode("signin");
                 const {payload} = dispatch(signupUser({private: true, ...formValues}));
-                if (payload.success) {
+                if (payload?.success) {
                     toast.success('Registration successful!')
                 }
             }

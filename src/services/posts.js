@@ -43,12 +43,13 @@ export const postsApi = createApi({
             ) {},
         }),
         getFeedPost: builder.query({
-            query: ({ page, perPage }) => ({
+            query: ({ page, perPage, search }) => ({
                 url: `/posts/get-feed-post`,
                 method: 'GET',
                 params: {
                     page,
                     perPage,
+                    search
                 },
             }),
             providesTags: ['posts']
