@@ -3,8 +3,9 @@
 }
 
 .feed-main-container {
-    background-color: #dee2e6;
-    padding-left: 10%;
+    background-color: #f3f6f9;
+    display: flex;
+    justify-content: center;
 }
 
 .form-container {
@@ -24,6 +25,14 @@
 .postgram {
     color: #C13584;
     text-transform: uppercase;
+}
+
+.w-30 {
+    width: 30%;
+}
+
+.profile-section {
+    background-color: #f3f6f9;
 }
 
 .login-form {
@@ -56,10 +65,11 @@ label {
 }
 
 .mid {
-    background-color: rgb(240, 248, 255);
+    background-color: #ffffff;
     display: inline-block;
     width: 100%;
     margin: auto;
+    box-shadow: 0 15px 10px -15px #cfd4d9;
 }
 
 .navbar {
@@ -69,10 +79,8 @@ label {
 
 
 .navbar li {
-
     list-style: none;
     display: inline-block;
-
     margin: auto;
 }
 
@@ -215,6 +223,16 @@ label {
 
 .input-group {
     width: auto !important;
+}
+
+.search-feed .input-group-text {
+    background-color: #f3f6f9 !important;
+    border-right: none !important;
+}
+
+.search-feed .form-control {
+    background-color: #f3f6f9 !important;
+    border-left: none !important;
 }
 
 .form-control:focus {

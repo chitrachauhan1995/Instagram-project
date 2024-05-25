@@ -18,10 +18,10 @@ const Home = () => {
     if (isLoading) {
         return <div className="vh-100 vw-100 d-flex align-items-center justify-content-center">Loading...</div>;
     }
-    if (!data) {
-        return <div>No posts added yet!</div>;
+    if (data && !posts?.data?.length) {
+        return <div className="text-center">No posts found!</div>;
     }
-    if (error) return <div>An error has occurred!</div>;
+    if (error) return <div className="text-center">An error has occurred!</div>;
 
     const handlePageChange = (event) => {
         setPage(event.selected + 1);
@@ -29,14 +29,14 @@ const Home = () => {
 
     return (
         <div className="feed-main-container">
-            <div className="w-100 h-100 d-flex flex-column">
+            <div className="d-flex flex-column">
                 <div className="feed-container">
                     {
                         posts?.data?.map((post, index) => (
                             <form className="post-card p-4" key={index}>
                                 <div className="card-body d-flex flex-column">
                                     <div className="d-flex align-items-center justify-content-start">
-                                        <FontAwesomeIcon icon={faCircleUser} size="4x"/>
+                                        <FontAwesomeIcon icon={faCircleUser} size="4x" color="#dee2e6"/>
                                         <div className="d-flex flex-column p-2">
                                             <div
                                                 className="fw-bold">{post.userData.firstname + ' ' + post.userData.lastname}</div>
@@ -55,7 +55,7 @@ const Home = () => {
                         ))
                     }
                 </div>
-                <ReactPaginate
+                {posts?.data?.length ? <ReactPaginate
                     pageCount={Math.ceil(posts?.total / 6)}
                     onPageChange={handlePageChange}
                     containerClassName={'pagination'}
@@ -66,7 +66,7 @@ const Home = () => {
                     nextClassName={'page-item'}
                     nextLinkClassName={'page-link'}
                     activeClassName={'active'}
-                />
+                /> : ''}
             </div>
         </div>
     )

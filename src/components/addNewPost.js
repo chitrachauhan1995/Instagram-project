@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
 import {toast} from "react-toastify";
 import {useCreatePostMutation} from "../services/posts";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 
 const AddNewPost = ({toggleModal}) => {
-    const [modal, setModal] = useState(false);
     const [formValues, setFormValues] = useState({});
     const [formErrors, setFormErrors] = useState({});
     const [imagePreview, setImagePreview] = useState('');
@@ -26,12 +27,11 @@ const AddNewPost = ({toggleModal}) => {
                 payload.filePath = base64;
             }
             const response = await createUserPost(payload);
-            if (response.data.status === 'success') {
-                setModal(!modal);
+            if (response?.data?.status === 'success') {
                 toast.success('successfully posted!');
                 setFormValues(null);
+                toggleModal();
             }
-
         }
     }
 
@@ -62,7 +62,7 @@ const AddNewPost = ({toggleModal}) => {
     const validate = (values) => {
         const errors = {};
         if (!values?.title) {
-            errors.firstname = "Title is required!";
+            errors.firstname = "Post title is required";
         }
         return errors;
     };
@@ -74,10 +74,8 @@ const AddNewPost = ({toggleModal}) => {
                 <div className="modal-content">
                     <div className="modal-header  d-flex align-items-center justify-content-between">
                         <h5 className="modal-title" id="exampleModalLabel">Add New Feed</h5>
-                        <button type="button" className="close" onClick={() => toggleModal()} data-dismiss="modal"
-                                aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
+                        <FontAwesomeIcon icon={faTimesCircle} onClick={() => toggleModal()} size="2xl" color="#dee2e6"
+                                         className="cursor-pointer"/>
                     </div>
                     <div className="modal-body">
                         <form onSubmit={(e) => createPost(e)}>

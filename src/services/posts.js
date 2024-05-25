@@ -53,11 +53,24 @@ export const postsApi = createApi({
                 },
             }),
             providesTags: ['posts']
+        }),
+        getUserFeedPost: builder.query({
+            query: ({ page, perPage, search }) => ({
+                url: `/posts/get-user-posts`,
+                method: 'GET',
+                params: {
+                    page,
+                    perPage,
+                    search
+                },
+            }),
+            providesTags: ['posts']
         })
     })
 })
 
 export const {
     useCreatePostMutation,
-    useGetFeedPostQuery
+    useGetFeedPostQuery,
+    useGetUserFeedPostQuery
 } = postsApi

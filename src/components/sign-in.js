@@ -4,6 +4,7 @@ import {useDispatch} from "react-redux";
 import {toast} from "react-toastify";
 import useToken from "../useToken";
 import {loginUser, signupUser} from "../services/authSlice";
+import {userValidation} from './../utils/validation'
 
 export default function SignIn() {
     let [authMode, setAuthMode] = useState("signin");
@@ -35,7 +36,7 @@ export default function SignIn() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const errors = validate(formValues)
+        const errors = userValidation(formValues, authMode)
         setFormErrors(errors);
         if (!Object.keys(errors)?.length) {
             setIsSubmit(true);
@@ -59,34 +60,14 @@ export default function SignIn() {
         }
     };
 
-    const validate = (values) => {
-        const errors = {};
-        const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-
-        if (!values.firstname && authMode == "signup") {
-            errors.firstname = "First Name is required!";
-        }
-
-        if (!values.email) {
-            errors.email = "Email is required!";
-        } else if (!regex.test(values.email)) {
-            errors.email = "This is not a valid email format!";
-        }
-
-        if (!values.password) {
-            errors.password = "Password is required!";
-        } else if (values.password.length < 4) {
-            errors.password = "Password must be more than 4 characters";
-        } else if (values.password.length > 16) {
-            errors.password = "Password cannot be more than 16 characters";
-        }
-        return errors;
-    };
-
     return (
         <>
             {authMode === "signup" ? (
                 <div className="form-container">
+                   <div className="d-flex flex-column w-30 text-center">
+                       <h4 className="postgram">Postgram</h4>
+                       <p>Connect with friends and the world around you.</p>
+                   </div>
                     <form className="login-form" onSubmit={(e) => handleSubmit(e)}>
                         <div className="login-form-content">
                             <h3 className="login-form-title">Sign Up</h3>
@@ -169,6 +150,10 @@ export default function SignIn() {
             ) : (
                 <div>
                     <div className="form-container">
+                        <div className="d-flex flex-column w-30 text-center">
+                            <h4 className="postgram">Postgram</h4>
+                            <p>Connect with friends and the world around you.</p>
+                        </div>
                         <form className="login-form" onSubmit={(e) => handleSubmit(e)}>
                             <div className="login-form-content">
                                 <h3 className="login-form-title">Sign In</h3>
