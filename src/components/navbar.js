@@ -57,13 +57,13 @@ const Navbar = () => {
     return (
         <header className="header mid d-flex justify-content-between align-items-center navbar">
             <h4 className="postgram">Postgram</h4>
-            <div className="d-flex align-items-center justify-content-center search-feed">
+            {location.pathname == '/home' || location.pathname == '/profile' ? <div className="d-flex align-items-center justify-content-center search-feed">
                 <div className="input-group m-1">
                     <div className="input-group-text"><FontAwesomeIcon icon={faSearch}/></div>
                     <input type="text" className="form-control" placeholder="Search Feed"
                            onChange={(e) => searchFeed(e.target.value)}/>
                 </div>
-            </div>
+            </div> : ''}
             <div className="d-flex justify-content-between align-items-center">
                 <div className="m-3 cursor-pointer">
                     <FontAwesomeIcon onClick={home} icon={faHome} size="xl" className="cursor-pointer"
@@ -81,6 +81,7 @@ const Navbar = () => {
                                      color={location.pathname == '/profile' && '#C13584'}/>
                 </div>
                 <div className="my-3 mx-4 cursor-pointer">
+                    {user && <span className="p-1">{user.firstname + ' ' + user.lastname}</span>}
                     <FontAwesomeIcon onClick={logout} icon={faSignOut} size="xl" className="cursor-pointer"/>
                 </div>
             </div>

@@ -6,7 +6,7 @@ import {SearchProvider} from "./searchContext";
 
 const PrivateRoutes = () => {
     const {token} = useToken();
-    return token ? <><SearchProvider><Navbar/><Outlet/></SearchProvider></> : <Navigate to="/"/>;
+    return token ? <><SearchProvider><Navbar/><div className="main-container"><Outlet/></div></SearchProvider></> : <Navigate to="/"/>;
 };
 
 export default PrivateRoutes;

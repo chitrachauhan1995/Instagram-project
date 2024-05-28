@@ -17,10 +17,20 @@ export const usersApi = createApi({
         }}),
     tagTypes: ['users'],
     endpoints: (builder) => ({
-        getUserProfile: builder.query({
+        getAllUsers: builder.query({
             query: () => ({
                 url: '/users/get-user-profile',
                 method: 'GET',
+            }),
+            providesTags: ['users']
+        }),
+        getUser: builder.query({
+            query: ({user_id}) => ({
+                url: '/users/get-user',
+                method: 'GET',
+                params: {
+                    user_id
+                },
             }),
             providesTags: ['users']
         }),
@@ -74,7 +84,8 @@ export const usersApi = createApi({
 })
 
 export const {
-    useGetUserProfileQuery,
+    useGetAllUsersQuery,
+    useGetUserQuery,
     useUnfollowUserMutation,
     useShowUserProfileQuery,
     useFollowUserMutation,

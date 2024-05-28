@@ -1,3 +1,12 @@
+body {
+    overflow: hidden !important;
+}
+
+.main-container {
+    overflow-y: auto;
+    height: calc(100vh - 70px);
+}
+
 .App {
     background-color: white;
 }
@@ -70,6 +79,8 @@ label {
     width: 100%;
     margin: auto;
     box-shadow: 0 15px 10px -15px #cfd4d9;
+    position: fixed;
+    height: 70px;
 }
 
 .navbar {
@@ -249,4 +260,147 @@ label {
     border-radius: 8px;
     background-color: white;
     margin: 4px;
+}
+
+.messenger {
+    height: calc(100vh - 70px);
+    display: flex;
+}
+
+.chatMenu {
+    flex: 3.5;
+    height: calc(100vh - 70px);
+    overflow-y: hidden;
+}
+
+.chatMenuInput {
+    width: 90%;
+    padding: 10px 0;
+    border: none;
+    border-bottom: 1px solid gray;
+}
+
+.chatBox {
+    flex: 5.5;
+}
+
+.chatBoxWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    background-color: beige;
+}
+
+.chatBoxTop {
+    height: 100%;
+    overflow-y: scroll;
+    padding-right: 10px;
+}
+
+.chatBoxBottom {
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.chatMessageInput {
+    width: 80%;
+    height: 90px;
+    padding: 10px;
+}
+
+.chatSubmitButton {
+    width: 70px;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: teal;
+    color: white;
+}
+
+.chatMenuWrapper,
+.chatBoxWrapper {
+    padding: 10px;
+    height: 100%;
+}
+
+.noConversationText {
+    position: absolute;
+    top: 10%;
+    font-size: 50px;
+    color: rgb(224, 220, 220);
+    cursor: default;
+}
+
+@media screen and (max-width: 768px) {
+    .chatMenu {
+        flex: 1;
+    }
+
+    .chatMenuInput {
+        display: none;
+    }
+
+    .chatBox {
+        flex: 10;
+    }
+}
+
+.message {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.messageTop {
+    display: flex;
+}
+
+.messageImg {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.messageText {
+    padding: 10px;
+    border-radius: 20px;
+    background-color: #1877f2;
+    color: white;
+    max-width: 300px;
+}
+
+.messageBottom {
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+.message.own {
+    align-items: flex-end;
+}
+
+.message.own .messageText {
+    background-color: rgb(245, 241, 241);
+    color: black;
+}
+
+.chats-title {
+    height: 70px !important;
+}
+
+.conversation {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.conversation:hover {
+    background-color: rgb(245, 243, 243);
 }

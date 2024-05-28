@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import {toast} from "react-toastify";
-import {useGetUserProfileQuery, useUpdateUserProfileMutation} from "../services/users";
+import {useGetAllUsersQuery, useUpdateUserProfileMutation} from "../services/users";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleUser, faEdit, faTimesCircle, faUserAlt} from "@fortawesome/free-solid-svg-icons";
 import {useGetUserFeedPostQuery} from "../services/posts";
@@ -11,7 +11,7 @@ import {userValidation} from './../utils/validation'
 export default function Profile() {
     const {searchValue} = useContext(SearchContext);
     const [page, setPage] = useState(1);
-    const {data, error, isLoading} = useGetUserProfileQuery();
+    const {data, error, isLoading} = useGetAllUsersQuery();
     const {data: postData, isLoading: isPostLoading, error: isPostError} = useGetUserFeedPostQuery({
         page,
         perPage: 6,
@@ -63,7 +63,7 @@ export default function Profile() {
     };
 
     return (
-        <div className="d-flex flex-column justify-content-center profile-section h-100">
+        <div className="d-flex flex-column justify-content-center profile-section">
             <div className="d-flex flex-column">
                 <div className="d-flex flex-column justify-content-center my-2">
                     <FontAwesomeIcon icon={faUserAlt} size="9x" color="#C13584"/>

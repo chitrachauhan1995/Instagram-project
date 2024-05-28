@@ -14,7 +14,7 @@ root.render(
     <Provider store={store}>
         <React.StrictMode>
             <App/>
-            <ToastContainer/>
+            <ToastContainer className="h-0 w-0"/>
         </React.StrictMode>
     </Provider>
 );
