@@ -27,16 +27,17 @@ export default function Messenger() {
                 createdAt: Date.now(),
             });
         });
-        const user = localStorage.getItem('currentUser');
-        if (user) {
-            const currentUser = JSON.parse(user);
-            setUser(currentUser);
-        }
     }, []);
 
     useEffect(() => {
-        const users = data?.data?.filter((u) => u._id !== user._id);
+        const user = localStorage.getItem('currentUser');
+        const currentUser = JSON.parse(user);
+        setUser(currentUser);
+        const users = currentUser ? data?.data?.filter((u) => u._id !== currentUser._id) : data?.data;
         setAllUsers(users);
+        if(currentUser) {
+            getConversations(currentUser._id);
+        }
     }, [data]);
 
     useEffect(() => {
@@ -52,10 +53,10 @@ export default function Messenger() {
         });
     }, [user]);
 
-    const getConversations = async () => {
+    const getConversations = async (user_id) => {
         try {
             const response = await fetch(
-                'http://localhost:5000/conversations/' + user._id,
+                'http://localhost:5000/conversations/' + user_id,
                 {
                     method: 'GET',
                     headers: {
@@ -97,10 +98,6 @@ export default function Messenger() {
     };
 
     useEffect(() => {
-        getConversations();
-    }, [user?._id]);
-
-    useEffect(() => {
         getMessages();
     }, [currentChat]);
 
@@ -108,6 +105,35 @@ export default function Messenger() {
         scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
 
+    const setNewConversation = async (receiverId) => {
+        const conversation = {
+            senderId: user._id,
+            receiverId,
+        };
+        // add new conversation.
+        try {
+            const response = await fetch(
+                'http://localhost:5000/conversations',
+                {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify(conversation),
+                }
+            );
+            let data = await response.json();
+            if (response.status === 200) {
+                setCurrentChat(data);
+                getConversations(user._id);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         const message = {
@@ -116,38 +142,9 @@ export default function Messenger() {
             conversationId: currentChat._id,
         };
 
-        let receiverId = '';
-        if (conversations?.length) {
-            receiverId = currentChat.members.find(
-                (member) => member !== user._id
-            );
-        } else {
-            receiverId = currentChat._id;
-            const conversation = {
-                senderId: user._id,
-                receiverId,
-            };
-            // add new conversation call.
-            try {
-                const response = await fetch(
-                    'http://localhost:5000/conversations',
-                    {
-                        method: 'POST',
-                        headers: {
-                            Accept: 'application/json',
-                            'Content-Type': 'application/json',
-                            authorization: `Bearer ${token}`,
-                        },
-                        body: JSON.stringify(conversation),
-                    }
-                );
-                if (response.status === 200) {
-                    getConversations();
-                }
-            } catch (err) {
-                console.log(err);
-            }
-        }
+        const  receiverId = currentChat.members.find(
+            (member) => member !== user._id
+        );
 
         const messageBody = {
             senderId: user._id,
@@ -202,7 +199,7 @@ export default function Messenger() {
                             <h4>New Chat</h4>
                             {allUsers?.map((c, index) => (
                                 <div
-                                    onClick={() => setCurrentChat(c)}
+                                    onClick={() => setNewConversation(c._id)}
                                     key={index}
                                 >
                                     <Conversation
