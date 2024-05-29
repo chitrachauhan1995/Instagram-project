@@ -15,25 +15,9 @@ export const authApi = createApi({
     }),
     tagTypes: ["auth"],
     endpoints: (builder) => ({
-        signup: builder.mutation({
-            query: (payload) => ({
-                url: "auth/sign-up",
-                method: "POST",
-                body: payload,
-            }),
-            invalidatesTags: ["auth"],
-        }),
         sendVerificationCode: builder.mutation({
             query: (payload) => ({
                 url: `/auth/send-verification-otp`,
-                method: "POST",
-                body: payload,
-            }),
-            invalidatesTags: ["auth"],
-        }),
-        login: builder.mutation({
-            query: (payload) => ({
-                url: "/auth/login",
                 method: "POST",
                 body: payload,
             }),
@@ -58,9 +42,7 @@ export const authApi = createApi({
 });
 
 export const {
-    useSignupMutation,
     useSendVerificationCodeMutation,
-    useLoginMutation,
     useVerifyOtpMutation,
     useVerifyEmailQuery,
 } = authApi;

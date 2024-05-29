@@ -1,14 +1,22 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useMemo, useState} from "react";
 import {useGetFeedPostQuery} from "../services/posts";
 import ReactPaginate from "react-paginate";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleUser} from "@fortawesome/free-solid-svg-icons";
-import {SearchContext} from "./searchContext";
+import {SearchContext} from "../context/searchContext";
 
 const Home = () => {
     const {searchValue} = useContext(SearchContext);
     const [page, setPage] = useState(1);
-    const {data, isLoading, error} = useGetFeedPostQuery({page, perPage: 6, search: searchValue ?? ''});
+    const queryParams = useMemo(() => {
+        return {
+            page,
+            perPage: 6,
+            search: searchValue ?? '',
+        };
+    }, [page, searchValue]);
+
+    const {data, isLoading, error} = useGetFeedPostQuery(queryParams);
     const [posts, setPosts] = useState({data: [], total: 0});
 
     useEffect(() => {
@@ -31,29 +39,27 @@ const Home = () => {
         <div className="feed-main-container">
             <div className="d-flex flex-column">
                 <div className="feed-container">
-                    {
-                        posts?.data?.map((post, index) => (
-                            <form className="post-card p-4" key={index}>
-                                <div className="card-body d-flex flex-column">
-                                    <div className="d-flex align-items-center justify-content-start">
-                                        <FontAwesomeIcon icon={faCircleUser} size="4x" color="#dee2e6"/>
-                                        <div className="d-flex flex-column p-2">
-                                            <div
-                                                className="fw-bold">{post.userData.firstname + ' ' + post.userData.lastname}</div>
-                                            <p className="text-muted">{post.title}</p>
-                                        </div>
-                                    </div>
-                                    <div className="d-flex flex-column">
-                                        {post.description &&
-                                        <p className="mb-4">{post.description}</p>}
-                                        <img src={post.filePath}
-                                             alt="avatar"
-                                             className="img-fluid img-size"/>
+                    {posts?.data?.map((post, index) => (
+                        <form className="post-card p-4" key={index}>
+                            <div className="card-body d-flex flex-column">
+                                <div className="d-flex align-items-center justify-content-start">
+                                    <FontAwesomeIcon icon={faCircleUser} size="4x" color="#dee2e6"/>
+                                    <div className="d-flex flex-column p-2">
+                                        <div
+                                            className="fw-bold">{post.userData.firstname + ' ' + post.userData.lastname}</div>
+                                        <p className="text-muted">{post.title}</p>
                                     </div>
                                 </div>
-                            </form>
-                        ))
-                    }
+                                <div className="d-flex flex-column">
+                                    {post.description &&
+                                    <p className="mb-4">{post.description}</p>}
+                                    <img src={post.filePath}
+                                         alt="avatar"
+                                         className="img-fluid img-size"/>
+                                </div>
+                            </div>
+                        </form>
+                    ))}
                 </div>
                 {posts?.data?.length ? <ReactPaginate
                     pageCount={Math.ceil(posts?.total / 6)}

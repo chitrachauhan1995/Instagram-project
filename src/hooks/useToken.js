@@ -3,8 +3,7 @@ import Cookies from "js-cookie";
 
 const useToken = () => {
   const getToken = () => {
-    const token = Cookies.get("token");
-    return token ? token : null;
+    return Cookies.get("token") ?? null;
   };
 
   const [token, setToken] = useState(getToken());

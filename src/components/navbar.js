@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 import {useLocation, useNavigate} from "react-router";
 import AddNewPost from "./addNewPost";
 import {debounce} from "lodash";
-import {SearchContext} from "./searchContext";
+import {SearchContext} from "../context/searchContext";
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -51,34 +51,34 @@ const Navbar = () => {
     };
 
     const searchFeed = useMemo(() => {
-        return debounce(handleSearch, 500);
+        return debounce(handleSearch, 1000);
     }, [searchValue]);
 
     return (
         <header className="header mid d-flex justify-content-between align-items-center navbar">
             <h4 className="postgram">Postgram</h4>
-            {location.pathname == '/home' || location.pathname == '/profile' ? <div className="d-flex align-items-center justify-content-center search-feed">
+            {location.pathname === '/home' || location.pathname === '/profile' && <div className="d-flex align-items-center justify-content-center search-feed">
                 <div className="input-group m-1">
                     <div className="input-group-text"><FontAwesomeIcon icon={faSearch}/></div>
                     <input type="text" className="form-control" placeholder="Search Feed"
                            onChange={(e) => searchFeed(e.target.value)}/>
                 </div>
-            </div> : ''}
+            </div>}
             <div className="d-flex justify-content-between align-items-center">
                 <div className="m-3 cursor-pointer">
                     <FontAwesomeIcon onClick={home} icon={faHome} size="xl" className="cursor-pointer"
-                                     color={location.pathname == '/home' && '#C13584'}/>
+                                     color={location.pathname === '/home' ? '#C13584' : ''}/>
                 </div>
                 <div className="m-3 cursor-pointer">
                     <FontAwesomeIcon onClick={toggleModal} icon={faSquarePlus} size="xl" className="cursor-pointer"/>
                 </div>
                 <div className="m-3 cursor-pointer">
                     <FontAwesomeIcon onClick={messenger} icon={faPeopleGroup} size="xl" className="cursor-pointer"
-                                     color={location.pathname == '/chat-list' && '#C13584'}/>
+                                     color={location.pathname === '/chat-list' ? '#C13584' : ''}/>
                 </div>
                 <div className="m-3 cursor-pointer">
                     <FontAwesomeIcon onClick={profile} icon={faUser} size="xl" className="cursor-pointer"
-                                     color={location.pathname == '/profile' && '#C13584'}/>
+                                     color={location.pathname === '/profile' ? '#C13584' : ''}/>
                 </div>
                 <div className="my-3 mx-4 cursor-pointer">
                     {user && <span className="p-1">{user.firstname + ' ' + user.lastname}</span>}

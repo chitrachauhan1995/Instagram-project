@@ -182,35 +182,32 @@ export default function Messenger() {
         <>
             <div className="messenger">
                 <div className="chatMenu">
-                    {conversations?.length ?
-                        <>
-                            <div className="chatMenuWrapper">
-                                <h4 className="chats-title m-0">Chats</h4>
-                                <hr className="m-0"/>
-                                {conversations?.map((c, index) => (
-                                    <div onClick={() => setCurrentChat(c)} key={index}>
-                                        <Conversation conversation={c} currentUser={user} key={index}
-                                                      conversations={conversations}/>
-                                    </div>
-                                ))}
-                            </div>
-                        </>
-                        : <>
-                            <div className="chatMenuWrapper">
-                                <h4>New Chat</h4>
-                                {allUsers?.map((c, index) => (
-                                    <div onClick={() => setCurrentChat(c)} key={index}>
-                                        <Conversation conversation={c} currentUser={user} key={index}
-                                                      conversations={conversations}/>
-                                    </div>
-                                ))}
-                            </div>
-                        </>
+                    {conversations?.length ? <div className="chatMenuWrapper">
+                            <h4 className="chats-title m-0">Chats</h4>
+                            <hr className="m-0"/>
+                            {conversations?.map((c, index) => (
+                                <div onClick={() => setCurrentChat(c)} key={index}>
+                                    <Conversation conversation={c} currentUser={user} key={index}
+                                                  conversations={conversations}/>
+                                </div>
+                            ))}
+                        </div>
+                        : <div className="chatMenuWrapper">
+                            <h4>New Chat</h4>
+                            {allUsers?.map((c, index) => (
+                                <div onClick={() => setCurrentChat(c)} key={index}>
+                                    <Conversation conversation={c} currentUser={user} key={index}
+                                                  conversations={conversations}/>
+                                </div>
+                            ))}
+                        </div>
                     }
                 </div>
                 <div className="chatBox">
-                    {currentChat && <div className="current-conversation"><Conversation conversation={currentChat} currentUser={user}
-                                                       conversations={conversations}/></div>}
+                    {currentChat &&
+                    <div className="current-conversation">
+                        <Conversation conversation={currentChat} currentUser={user} conversations={conversations}/>
+                    </div>}
                     <hr className="m-0"/>
                     <div className="chatBoxWrapper">
                         {currentChat ? (

@@ -2,9 +2,9 @@ import React, {useState} from "react";
 import {useNavigate} from "react-router";
 import {useDispatch} from "react-redux";
 import {toast} from "react-toastify";
-import useToken from "../useToken";
+import useToken from "../hooks/useToken";
 import {loginUser, signupUser} from "../services/authSlice";
-import {userValidation} from './../utils/validation'
+import {userValidation} from '../utils/validation'
 
 export default function SignIn() {
     let [authMode, setAuthMode] = useState("signin");
@@ -64,10 +64,10 @@ export default function SignIn() {
         <>
             {authMode === "signup" ? (
                 <div className="form-container">
-                   <div className="d-flex flex-column w-30 text-center">
-                       <h4 className="postgram">Postgram</h4>
-                       <p>Connect with friends and the world around you.</p>
-                   </div>
+                    <div className="d-flex flex-column w-30 text-center">
+                        <h4 className="postgram">Postgram</h4>
+                        <p>Connect with friends and the world around you.</p>
+                    </div>
                     <form className="login-form" onSubmit={(e) => handleSubmit(e)}>
                         <div className="login-form-content">
                             <h3 className="login-form-title">Sign Up</h3>
