@@ -1,25 +1,30 @@
-import { useState } from "react";
-import Cookies from "js-cookie";
+import { useState } from 'react';
+import Cookies from 'js-cookie';
 
 const useToken = () => {
-  const getToken = () => {
-    return Cookies.get("token") ?? null;
-  };
+    const getToken = () => {
+        return Cookies.get('token') ?? null;
+    };
 
-  const [token, setToken] = useState(getToken());
-  const saveToken = (userToken) => {
-    setTimeout(() => {
-      Cookies.set("token", userToken, {
-        expires: 7,
-        secure: true,
-      }, 500);
-    setToken(userToken);
-    })
-  };
-  return {
-    setToken: saveToken,
-    token,
-  };
+    const [token, setToken] = useState(getToken());
+    const saveToken = (userToken) => {
+        setTimeout(() => {
+            Cookies.set(
+                'token',
+                userToken,
+                {
+                    expires: 7,
+                    secure: true,
+                },
+                500
+            );
+            setToken(userToken);
+        });
+    };
+    return {
+        setToken: saveToken,
+        token,
+    };
 };
 
 export default useToken;

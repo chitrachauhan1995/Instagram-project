@@ -32,7 +32,7 @@ body {
 }
 
 .postgram {
-    color: #C13584;
+    color: #c13584;
     text-transform: uppercase;
 }
 
@@ -87,7 +87,6 @@ label {
     display: inline-block;
     padding: 0.5rem 0.5rem 0.5rem 10% !important;
 }
-
 
 .navbar li {
     list-style: none;
@@ -403,11 +402,11 @@ label {
 }
 
 .conversation:hover {
-    background-color: #C13584;
+    background-color: #c13584;
 }
 
 .current-conversation {
-    background-color: #C13584;
+    background-color: #c13584;
     color: white;
     font-weight: bold;
 }

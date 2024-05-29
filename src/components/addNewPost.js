@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
-import {toast} from "react-toastify";
-import {useCreatePostMutation} from "../services/posts";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faTimesCircle} from "@fortawesome/free-solid-svg-icons";
+import React, { useState } from 'react';
+import { toast } from 'react-toastify';
+import { useCreatePostMutation } from '../services/posts';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
-const AddNewPost = ({toggleModal}) => {
+const AddNewPost = ({ toggleModal }) => {
     const [formValues, setFormValues] = useState({});
     const [formErrors, setFormErrors] = useState({});
     const [imagePreview, setImagePreview] = useState('');
@@ -13,13 +13,13 @@ const AddNewPost = ({toggleModal}) => {
     const [createUserPost] = useCreatePostMutation();
 
     const handleChange = (e) => {
-        const {name, value} = e.target;
-        setFormValues({...formValues, [name]: value});
+        const { name, value } = e.target;
+        setFormValues({ ...formValues, [name]: value });
     };
 
     const createPost = async (e) => {
         e.preventDefault();
-        const errors = validate(formValues)
+        const errors = validate(formValues);
         setFormErrors(errors);
         if (!Object.keys(errors)?.length) {
             let payload = formValues;
@@ -33,7 +33,7 @@ const AddNewPost = ({toggleModal}) => {
                 toggleModal();
             }
         }
-    }
+    };
 
     const convertFileToBase64 = (file, callBack) => {
         const reader = new FileReader();
@@ -44,38 +44,49 @@ const AddNewPost = ({toggleModal}) => {
     };
 
     const photoUpload = async (e) => {
-        e.preventDefault()
-        const file = e.target.files[0]
+        e.preventDefault();
+        const file = e.target.files[0];
         if (file) {
             setFile(file);
             setImagePreview(URL.createObjectURL(e.target.files[0]));
             try {
                 await convertFileToBase64(file, (base64String) => {
-                    setBase64(base64String)
+                    setBase64(base64String);
                 });
             } catch (error) {
                 console.error('Error converting file to base64:', error);
             }
         }
-    }
+    };
 
     const validate = (values) => {
         const errors = {};
         if (!values?.title) {
-            errors.firstname = "Post title is required";
+            errors.firstname = 'Post title is required';
         }
         return errors;
     };
 
     return (
-        <div className="modal" role="dialog" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
+        <div
+            className="modal"
+            role="dialog"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+        >
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header  d-flex align-items-center justify-content-between">
-                        <h5 className="modal-title" id="exampleModalLabel">Add New Feed</h5>
-                        <FontAwesomeIcon icon={faTimesCircle} onClick={() => toggleModal()} size="2xl" color="#dee2e6"
-                                         className="cursor-pointer"/>
+                        <h5 className="modal-title" id="exampleModalLabel">
+                            Add New Feed
+                        </h5>
+                        <FontAwesomeIcon
+                            icon={faTimesCircle}
+                            onClick={() => toggleModal()}
+                            size="2xl"
+                            color="#dee2e6"
+                            className="cursor-pointer"
+                        />
                     </div>
                     <div className="modal-body">
                         <form onSubmit={(e) => createPost(e)}>
@@ -89,7 +100,9 @@ const AddNewPost = ({toggleModal}) => {
                                     value={formValues?.title}
                                     onChange={(e) => handleChange(e)}
                                 />
-                                <small className="text-danger">{formErrors?.title}</small>
+                                <small className="text-danger">
+                                    {formErrors?.title}
+                                </small>
                             </div>
                             <div className="form-group mt-3">
                                 <label>Description</label>
@@ -105,43 +118,74 @@ const AddNewPost = ({toggleModal}) => {
                                 <label>Upload Image</label>
                                 <div className="form-group mt-3">
                                     <input
-                                        type='file'
-                                        name='avatar'
-                                        id='file'
-                                        accept='image/*'
+                                        type="file"
+                                        name="avatar"
+                                        id="file"
+                                        accept="image/*"
                                         onChange={photoUpload}
                                         src={imagePreview}
                                     />
-                                    {imagePreview &&
-                                    <img alt="img" src={imagePreview} width='100' height='100'/>}
+                                    {imagePreview && (
+                                        <img
+                                            alt="img"
+                                            src={imagePreview}
+                                            width="100"
+                                            height="100"
+                                        />
+                                    )}
                                 </div>
                             </div>
                             <div className="form-group mt-3">
                                 <label>Private</label>
                                 <div className="radio">
                                     <label>
-                                        <input type="radio"
-                                               name="isPrivate"
-                                               value={true}
-                                               checked={formValues?.isPrivate === true || formValues?.isPrivate === "true"}
-                                               onChange={(e) => handleChange(e)}/>
+                                        <input
+                                            type="radio"
+                                            name="isPrivate"
+                                            value={true}
+                                            checked={
+                                                formValues?.isPrivate ===
+                                                    true ||
+                                                formValues?.isPrivate === 'true'
+                                            }
+                                            onChange={(e) => handleChange(e)}
+                                        />
                                         Yes
                                     </label>
                                 </div>
                                 <div className="radio">
                                     <label>
-                                        <input type="radio" name="isPrivate" value={false}
-                                               checked={formValues?.isPrivate === false || formValues?.isPrivate === "false"}
-                                               onChange={(e) => handleChange(e)}/>
+                                        <input
+                                            type="radio"
+                                            name="isPrivate"
+                                            value={false}
+                                            checked={
+                                                formValues?.isPrivate ===
+                                                    false ||
+                                                formValues?.isPrivate ===
+                                                    'false'
+                                            }
+                                            onChange={(e) => handleChange(e)}
+                                        />
                                         No
                                     </label>
                                 </div>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal"
-                                        onClick={() => toggleModal()}>Close
+                                <button
+                                    type="button"
+                                    className="btn btn-secondary"
+                                    data-dismiss="modal"
+                                    onClick={() => toggleModal()}
+                                >
+                                    Close
                                 </button>
-                                <button type="submit" className="btn btn-primary">Save changes</button>
+                                <button
+                                    type="submit"
+                                    className="btn btn-primary"
+                                >
+                                    Save changes
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -149,5 +193,5 @@ const AddNewPost = ({toggleModal}) => {
             </div>
         </div>
     );
-}
+};
 export default AddNewPost;

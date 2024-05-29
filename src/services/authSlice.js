@@ -1,21 +1,18 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const signupUser = createAsyncThunk(
-    "auth/sign-up",
+    'auth/sign-up',
     async (payload, thunkAPI) => {
         try {
-            const response = await fetch(
-                "http://localhost:5000/auth/sign-up",
-                {
-                    method: "POST",
-                    headers: {
-                        Accept: "application/json",
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(payload),
-                }
-            );
-            let {data} = await response.json();
+            const response = await fetch('http://localhost:5000/auth/sign-up', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+            let { data } = await response.json();
             if (response.status === 200) {
                 return data;
             } else {
@@ -28,20 +25,17 @@ export const signupUser = createAsyncThunk(
 );
 
 export const loginUser = createAsyncThunk(
-    "auth/login",
+    'auth/login',
     async (payload, thunkAPI) => {
         try {
-            const response = await fetch(
-                "http://localhost:5000/auth/login",
-                {
-                    method: "POST",
-                    headers: {
-                        Accept: "application/json",
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(payload),
-                }
-            );
+            const response = await fetch('http://localhost:5000/auth/login', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
             let data = await response.json();
             if (response.status === 200) {
                 return data;
@@ -55,14 +49,13 @@ export const loginUser = createAsyncThunk(
 );
 
 const initialState = {
-    username: "",
-    email: "",
+    username: '',
+    email: '',
     isFetching: false,
     isSuccess: false,
     isError: false,
-    errorMessage: "",
+    errorMessage: '',
 };
-
 
 const authSlice = createSlice({
     name: 'auth',
@@ -76,7 +69,7 @@ const authSlice = createSlice({
         },
     },
     extraReducers: {
-        [signupUser.fulfilled]: (state, {payload}) => {
+        [signupUser.fulfilled]: (state, { payload }) => {
             state.isFetching = false;
             state.isSuccess = true;
             state.email = payload.user.email;
@@ -85,19 +78,19 @@ const authSlice = createSlice({
         [signupUser.pending]: (state) => {
             state.isFetching = true;
         },
-        [signupUser.rejected]: (state, {payload}) => {
+        [signupUser.rejected]: (state, { payload }) => {
             state.isFetching = false;
             state.isError = true;
             state.errorMessage = payload.message;
         },
-        [loginUser.fulfilled]: (state, {payload}) => {
+        [loginUser.fulfilled]: (state, { payload }) => {
             state.email = payload.email;
             state.username = payload.name;
             state.isFetching = false;
             state.isSuccess = true;
             return state;
         },
-        [loginUser.rejected]: (state, {payload}) => {
+        [loginUser.rejected]: (state, { payload }) => {
             state.isFetching = false;
             state.isError = true;
             state.errorMessage = payload.message;
@@ -105,9 +98,9 @@ const authSlice = createSlice({
         [loginUser.pending]: (state) => {
             state.isFetching = true;
         },
-    }
-})
+    },
+});
 
-export const {clearState} = authSlice.actions;
+export const { clearState } = authSlice.actions;
 
 export const userSelector = (state) => state.auth;

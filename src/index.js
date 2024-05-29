@@ -1,20 +1,20 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import {Provider} from "react-redux";
-import {ToastContainer} from 'react-toastify';
-import reportWebVitals from "./reportWebVitals";
-import App from "./App";
-import {store} from "./store";
-import "./index.css";
-import "bootstrap/dist/css/bootstrap.css";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
+import reportWebVitals from './reportWebVitals';
+import App from './App';
+import { store } from './store';
+import './index.css';
+import 'bootstrap/dist/css/bootstrap.css';
 import 'react-toastify/dist/ReactToastify.css';
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <Provider store={store}>
         <React.StrictMode>
-            <App/>
-            <ToastContainer className="h-0 w-0"/>
+            <App />
+            <ToastContainer className="h-0 w-0" />
         </React.StrictMode>
     </Provider>
 );

@@ -1,9 +1,9 @@
-import moment from "moment";
+import moment from 'moment';
 
-export default function Message({message, own}) {
-    const createdAt = moment(message.createdAt).format('MMMM DD YYYY, h:mm A')
+export default function Message({ message, own }) {
+    const createdAt = moment(message.createdAt).format('MMMM DD YYYY, h:mm A');
     return (
-        <div className={own ? "message own" : "message"}>
+        <div className={own ? 'message own' : 'message'}>
             <div className="messageTop">
                 <img
                     className="messageImg"

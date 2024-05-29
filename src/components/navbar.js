@@ -1,17 +1,24 @@
-import React, {useContext, useEffect, useMemo, useState} from 'react';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faSignOut, faHome, faPeopleGroup, faUser, faSquarePlus, faSearch} from '@fortawesome/free-solid-svg-icons'
-import Cookies from "js-cookie";
-import {useLocation, useNavigate} from "react-router";
-import AddNewPost from "./addNewPost";
-import {debounce} from "lodash";
-import {SearchContext} from "../context/searchContext";
+import React, { useContext, useEffect, useMemo, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    faSignOut,
+    faHome,
+    faPeopleGroup,
+    faUser,
+    faSquarePlus,
+    faSearch,
+} from '@fortawesome/free-solid-svg-icons';
+import Cookies from 'js-cookie';
+import { useLocation, useNavigate } from 'react-router';
+import AddNewPost from './addNewPost';
+import { debounce } from 'lodash';
+import { SearchContext } from '../context/searchContext';
 
 const Navbar = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState();
     const [modal, setModal] = useState(false);
-    const {searchValue, setSearchValue} = useContext(SearchContext);
+    const { searchValue, setSearchValue } = useContext(SearchContext);
     const location = useLocation();
 
     useEffect(() => {
@@ -22,25 +29,25 @@ const Navbar = () => {
         return () => {
             searchFeed.cancel();
         };
-    }, [])
+    }, []);
 
     const logout = () => {
-        Cookies.remove("token");
-        localStorage.removeItem('currentUser')
-        navigate("/");
-    }
+        Cookies.remove('token');
+        localStorage.removeItem('currentUser');
+        navigate('/');
+    };
 
     const messenger = () => {
-        navigate("/chat-list");
-    }
+        navigate('/chat-list');
+    };
 
     const profile = () => {
-        navigate("/profile");
-    }
+        navigate('/profile');
+    };
 
     const home = () => {
-        navigate("/home");
-    }
+        navigate('/home');
+    };
 
     const toggleModal = () => {
         setModal(!modal);
@@ -57,38 +64,78 @@ const Navbar = () => {
     return (
         <header className="header mid d-flex justify-content-between align-items-center navbar">
             <h4 className="postgram">Postgram</h4>
-            {location.pathname === '/home' || location.pathname === '/profile' && <div className="d-flex align-items-center justify-content-center search-feed">
-                <div className="input-group m-1">
-                    <div className="input-group-text"><FontAwesomeIcon icon={faSearch}/></div>
-                    <input type="text" className="form-control" placeholder="Search Feed"
-                           onChange={(e) => searchFeed(e.target.value)}/>
-                </div>
-            </div>}
+            {location.pathname === '/home' ||
+                (location.pathname === '/profile' && (
+                    <div className="d-flex align-items-center justify-content-center search-feed">
+                        <div className="input-group m-1">
+                            <div className="input-group-text">
+                                <FontAwesomeIcon icon={faSearch} />
+                            </div>
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Search Feed"
+                                onChange={(e) => searchFeed(e.target.value)}
+                            />
+                        </div>
+                    </div>
+                ))}
             <div className="d-flex justify-content-between align-items-center">
                 <div className="m-3 cursor-pointer">
-                    <FontAwesomeIcon onClick={home} icon={faHome} size="xl" className="cursor-pointer"
-                                     color={location.pathname === '/home' ? '#C13584' : ''}/>
+                    <FontAwesomeIcon
+                        onClick={home}
+                        icon={faHome}
+                        size="xl"
+                        className="cursor-pointer"
+                        color={location.pathname === '/home' ? '#C13584' : ''}
+                    />
                 </div>
                 <div className="m-3 cursor-pointer">
-                    <FontAwesomeIcon onClick={toggleModal} icon={faSquarePlus} size="xl" className="cursor-pointer"/>
+                    <FontAwesomeIcon
+                        onClick={toggleModal}
+                        icon={faSquarePlus}
+                        size="xl"
+                        className="cursor-pointer"
+                    />
                 </div>
                 <div className="m-3 cursor-pointer">
-                    <FontAwesomeIcon onClick={messenger} icon={faPeopleGroup} size="xl" className="cursor-pointer"
-                                     color={location.pathname === '/chat-list' ? '#C13584' : ''}/>
+                    <FontAwesomeIcon
+                        onClick={messenger}
+                        icon={faPeopleGroup}
+                        size="xl"
+                        className="cursor-pointer"
+                        color={
+                            location.pathname === '/chat-list' ? '#C13584' : ''
+                        }
+                    />
                 </div>
                 <div className="m-3 cursor-pointer">
-                    <FontAwesomeIcon onClick={profile} icon={faUser} size="xl" className="cursor-pointer"
-                                     color={location.pathname === '/profile' ? '#C13584' : ''}/>
+                    <FontAwesomeIcon
+                        onClick={profile}
+                        icon={faUser}
+                        size="xl"
+                        className="cursor-pointer"
+                        color={
+                            location.pathname === '/profile' ? '#C13584' : ''
+                        }
+                    />
                 </div>
                 <div className="my-3 mx-4 cursor-pointer">
-                    {user && <span className="p-1">{user.firstname + ' ' + user.lastname}</span>}
-                    <FontAwesomeIcon onClick={logout} icon={faSignOut} size="xl" className="cursor-pointer"/>
+                    {user && (
+                        <span className="p-1">
+                            {user.firstname + ' ' + user.lastname}
+                        </span>
+                    )}
+                    <FontAwesomeIcon
+                        onClick={logout}
+                        icon={faSignOut}
+                        size="xl"
+                        className="cursor-pointer"
+                    />
                 </div>
             </div>
-            {modal && (
-                <AddNewPost toggleModal={toggleModal}/>
-            )}
+            {modal && <AddNewPost toggleModal={toggleModal} />}
         </header>
     );
-}
+};
 export default Navbar;

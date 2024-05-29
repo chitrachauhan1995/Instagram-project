@@ -1,14 +1,14 @@
-import "./App.css";
-import SignIn from "./components/sign-in";
-import React from "react";
-import {BrowserRouter, Routes, Route} from "react-router-dom";
-import Home from "./components/home";
-import Profile from "./components/profile";
-import PrivateRoutes from "./components/PrivateRoutes";
-import socketClient from "socket.io-client"
-import Messenger from "./components/messenger";
+import './App.css';
+import SignIn from './components/sign-in';
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from './components/home';
+import Profile from './components/profile';
+import PrivateRoutes from './components/PrivateRoutes';
+import socketClient from 'socket.io-client';
+import Messenger from './components/messenger';
 
-const SERVER = "http://localhost:5000/";
+const SERVER = 'http://localhost:5000/';
 
 function App() {
     const socket = socketClient(SERVER);
@@ -18,12 +18,12 @@ function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route element={<PrivateRoutes/>}>
-                    <Route path="/home" element={<Home/>}/>
-                    <Route path="/profile" element={<Profile/>}/>
-                    <Route path="/chat-list" element={<Messenger/>}/>
+                <Route element={<PrivateRoutes />}>
+                    <Route path="/home" element={<Home />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/chat-list" element={<Messenger />} />
                 </Route>
-                <Route path="/" element={<SignIn/>}/>
+                <Route path="/" element={<SignIn />} />
             </Routes>
         </BrowserRouter>
     );
