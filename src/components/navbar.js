@@ -38,7 +38,7 @@ const Navbar = () => {
     };
 
     const messenger = () => {
-        navigate('/chat-list');
+        navigate('/chats');
     };
 
     const profile = () => {
@@ -104,7 +104,7 @@ const Navbar = () => {
                         size="xl"
                         className="cursor-pointer"
                         color={
-                            location.pathname === '/chat-list' ? '#C13584' : ''
+                            location.pathname === '/chats' ? '#C13584' : ''
                         }
                     />
                 </div>

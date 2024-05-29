@@ -15,6 +15,7 @@ export default function Profile() {
     const { searchValue } = useContext(SearchContext);
     const [page, setPage] = useState(1);
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const [isShowFullDescription, setIsShowFullDescription] = useState(false);
 
     const { data, isLoading, error } = useGetUserQuery({user_id: currentUser._id});
     const queryParams = useMemo(() => {
@@ -90,7 +91,7 @@ export default function Profile() {
                     <h4 className="text-center">POSTS</h4>
                     <div className="feed-container">
                         {posts?.data?.map((post, index) => (
-                            <form className="post-card p-4" key={index}>
+                            <form className="post-card p-4" key={index} style={{'maxHeight': isShowFullDescription ? 'max-content' : ''}}>
                                 <div className="card-body d-flex flex-column">
                                     <div className="d-flex align-items-center justify-content-start">
                                         {user?.profilePhoto ? (
@@ -119,14 +120,14 @@ export default function Profile() {
                                     </div>
                                     <div className="d-flex flex-column">
                                         {post.description && (
-                                            <p className="mb-4">
+                                            <p className={isShowFullDescription ? 'mt-2 cursor-pointer' : 'mt-2 cursor-pointer post-description'} onClick={() => setIsShowFullDescription(true)}>
                                                 {post.description}
                                             </p>
                                         )}
                                         <img
                                             src={post.filePath}
                                             alt="avatar"
-                                            className="img-fluid img-size"
+                                            className="img-fluid post-photo mt-2"
                                         />
                                     </div>
                                 </div>

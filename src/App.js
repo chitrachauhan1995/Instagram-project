@@ -7,6 +7,7 @@ import Profile from './components/profile';
 import PrivateRoutes from './components/PrivateRoutes';
 import socketClient from 'socket.io-client';
 import Messenger from './components/messenger';
+import PageNotFound from './components/pageNotFound';
 
 const SERVER = 'http://localhost:5000/';
 
@@ -19,11 +20,12 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route element={<PrivateRoutes />}>
-                    <Route path="/home" element={<Home />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/chat-list" element={<Messenger />} />
+                    <Route exact path="/home" element={<Home />} />
+                    <Route exact path="/profile" element={<Profile />} />
+                    <Route exact path="/chats" element={<Messenger />} />
                 </Route>
-                <Route path="/" element={<SignIn />} />
+                <Route exact path="/" element={<SignIn />} />
+                <Route path="*" element={<PageNotFound />} />
             </Routes>
         </BrowserRouter>
     );

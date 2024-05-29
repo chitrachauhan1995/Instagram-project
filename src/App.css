@@ -147,9 +147,31 @@ label {
     font-weight: bolder;
 }
 
-.img-size {
+.post-card {
+    width: 600px;
+    min-height: 600px;
+    max-height: 600px;
+    box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    border-radius: 8px;
+    background-color: white;
+    margin: 4px;
+}
+
+.post-photo {
     width: 100% !important;
     height: 100% !important;
+    border-radius: 4px;
+}
+
+.post-description {
+    max-height: 130px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
 }
 
 .profile-photo {
@@ -255,17 +277,6 @@ label {
 .form-control:focus {
     box-shadow: none !important;
     border-color: #dee2e6 !important;
-}
-
-.post-card {
-    width: 600px;
-    height: 600px;
-    box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
-    padding-top: 30px;
-    padding-bottom: 20px;
-    border-radius: 8px;
-    background-color: white;
-    margin: 4px;
 }
 
 .messenger {
@@ -418,4 +429,10 @@ label {
     background-color: #c13584;
     color: white;
     font-weight: bold;
+}
+
+.page-not-found {
+    color: #c13584;
+    height: 100vh;
+    text-align: center;
 }
