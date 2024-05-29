@@ -209,8 +209,8 @@ export default function Messenger() {
                     }
                 </div>
                 <div className="chatBox">
-                    {currentChat && <Conversation conversation={currentChat} currentUser={user}
-                                                  conversations={conversations}/>}
+                    {currentChat && <div className="current-conversation"><Conversation conversation={currentChat} currentUser={user}
+                                                       conversations={conversations}/></div>}
                     <hr className="m-0"/>
                     <div className="chatBoxWrapper">
                         {currentChat ? (
@@ -225,7 +225,7 @@ export default function Messenger() {
                                 <div className="chatBoxBottom">
                                       <textarea
                                           className="chatMessageInput"
-                                          placeholder="write something..."
+                                          placeholder="Type a message..."
                                           onChange={(e) => setNewMessage(e.target.value)}
                                           value={newMessage}
                                       />

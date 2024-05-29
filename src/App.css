@@ -306,9 +306,11 @@ label {
 }
 
 .chatMessageInput {
-    width: 80%;
+    width: 90%;
     height: 90px;
     padding: 10px;
+    border: none;
+    border-radius: 4px;
 }
 
 .chatSubmitButton {
@@ -328,11 +330,10 @@ label {
 }
 
 .noConversationText {
-    position: absolute;
-    top: 10%;
     font-size: 50px;
     color: rgb(224, 220, 220);
     cursor: default;
+    text-align: center;
 }
 
 @media screen and (max-width: 768px) {
@@ -402,5 +403,11 @@ label {
 }
 
 .conversation:hover {
-    background-color: rgb(245, 243, 243);
+    background-color: #C13584;
+}
+
+.current-conversation {
+    background-color: #C13584;
+    color: white;
+    font-weight: bold;
 }
