@@ -151,16 +151,19 @@ const EditProfile = ({ toggleModal, user }) => {
                                             onChange={photoUpload}
                                             src={imagePreview}
                                         />
-                                        <img
-                                            alt="img"
-                                            src={
-                                                imagePreview
-                                                    ? imagePreview
-                                                    : formValues?.profilePhoto
-                                            }
-                                            width="100"
-                                            height="100"
-                                        />
+                                        {(imagePreview ||
+                                            formValues?.profilePhoto) && (
+                                            <img
+                                                alt="img"
+                                                src={
+                                                    imagePreview
+                                                        ? imagePreview
+                                                        : formValues?.profilePhoto
+                                                }
+                                                width="100"
+                                                height="100"
+                                            />
+                                        )}
                                     </div>
                                 </div>
                                 <div className="form-group mt-3">

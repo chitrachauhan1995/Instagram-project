@@ -64,8 +64,7 @@ const Navbar = () => {
     return (
         <header className="header mid d-flex justify-content-between align-items-center navbar">
             <h4 className="postgram">Postgram</h4>
-            {location.pathname === '/home' ||
-                (location.pathname === '/profile' && (
+            {(location.pathname === '/home' || location.pathname === '/profile') && (
                     <div className="d-flex align-items-center justify-content-center search-feed">
                         <div className="input-group m-1">
                             <div className="input-group-text">
@@ -79,7 +78,7 @@ const Navbar = () => {
                             />
                         </div>
                     </div>
-                ))}
+                )}
             <div className="d-flex justify-content-between align-items-center">
                 <div className="m-3 cursor-pointer">
                     <FontAwesomeIcon

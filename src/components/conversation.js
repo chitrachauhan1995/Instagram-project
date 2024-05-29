@@ -28,11 +28,19 @@ export default function Conversation({
     return (
         <div className="conversation mt-0 p-1">
             <>
-                <FontAwesomeIcon
-                    icon={faCircleUser}
-                    size="4x"
-                    color="#dee2e6"
-                />
+                {user?.profilePhoto || conversation?.profilePhoto ? (
+                    <img
+                        src={user?.profilePhoto || conversation?.profilePhoto}
+                        alt="avatar"
+                        className="profile-photo"
+                    />
+                ) : (
+                    <FontAwesomeIcon
+                        icon={faCircleUser}
+                        size="4x"
+                        color="#dee2e6"
+                    />
+                )}
                 {isNewUsers ? (
                     <span className="p-1">
                         {conversation?.firstname + ' ' + conversation?.lastname}

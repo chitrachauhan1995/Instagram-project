@@ -93,11 +93,19 @@ export default function Profile() {
                             <form className="post-card p-4" key={index}>
                                 <div className="card-body d-flex flex-column">
                                     <div className="d-flex align-items-center justify-content-start">
-                                        <FontAwesomeIcon
-                                            icon={faCircleUser}
-                                            size="4x"
-                                            color="#dee2e6"
-                                        />
+                                        {user?.profilePhoto ? (
+                                            <img
+                                                src={user.profilePhoto}
+                                                alt="avatar"
+                                                className="profile-photo"
+                                            />
+                                        ) : (
+                                            <FontAwesomeIcon
+                                                icon={faCircleUser}
+                                                size="4x"
+                                                color="#dee2e6"
+                                            />
+                                        )}
                                         <div className="d-flex flex-column p-2">
                                             <div className="fw-bold">
                                                 {user?.firstname +
