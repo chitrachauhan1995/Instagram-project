@@ -152,6 +152,13 @@ label {
     height: 100% !important;
 }
 
+.profile-photo {
+    width: 100px !important;
+    height: 100px !important;
+    border-radius: 50%;
+    border: 2px solid #c13584;
+}
+
 .modal {
     display: block !important;
 }
@@ -269,7 +276,7 @@ label {
 .chatMenu {
     flex: 3.5;
     height: calc(100vh - 70px);
-    overflow-y: hidden;
+    overflow-y: auto;
 }
 
 .chatMenuInput {
@@ -391,6 +398,8 @@ label {
 
 .chats-title {
     height: 70px !important;
+    color: #c13584;
+    font-width: bold;
 }
 
 .conversation {

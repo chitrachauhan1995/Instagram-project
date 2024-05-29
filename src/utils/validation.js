@@ -4,7 +4,7 @@ export const userValidation = (values, authMode) => {
         /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     const usernameRegex = /^[a-zA-Z0-9-_@.]+$/;
 
-    if (authMode == 'signup') {
+    if (authMode !== 'signin') {
         if (!values.firstname) {
             errors.firstname = 'Firstname is required.';
         } else if (values.firstname.length < 2) {
@@ -38,14 +38,14 @@ export const userValidation = (values, authMode) => {
         errors.email = 'Invalid email address.';
     }
 
-    if (!values.password) {
-        errors.password = 'Password is required.';
-    } else if (values.password.length < 8) {
-        errors.password = 'Password must be more than 8 characters';
-    } else if (values.password.length > 15) {
-        errors.password = 'Password cannot be more than 15 characters';
+    if (!!authMode) {
+        if (!values.password) {
+            errors.password = 'Password is required.';
+        } else if (values.password.length < 8) {
+            errors.password = 'Password must be more than 8 characters';
+        } else if (values.password.length > 15) {
+            errors.password = 'Password cannot be more than 15 characters';
+        }
     }
     return errors;
 };
-
-export const profileValidation = (values) => {};
