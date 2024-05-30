@@ -35,11 +35,25 @@ export const usersApi = createApi({
             }),
             providesTags: ['users'],
         }),
+        followUser: builder.mutation({
+            query: (payload) => ({
+                url: `/users/follow-user`,
+                method: 'POST',
+                body: {userId: payload.userId},
+                params: {
+                    id: payload.id,
+                },
+            }),
+            invalidatesTags: ['users'],
+        }),
         unfollowUser: builder.mutation({
             query: (payload) => ({
                 url: '/users/unfollow-user',
                 method: 'POST',
-                body: payload,
+                body: {userId: payload.userId},
+                params: {
+                    id: payload.id,
+                },
             }),
             invalidatesTags: ['users'],
         }),
@@ -50,13 +64,15 @@ export const usersApi = createApi({
             }),
             providesTags: ['users'],
         }),
-        followUser: builder.mutation({
-            query: (payload) => ({
-                url: '/users/follow-user',
-                method: 'POST',
-                body: payload,
+        getFriends: builder.query({
+            query: (userId) => ({
+                url: `/users/friends`,
+                method: 'GET',
+                params: {
+                    userId,
+                },
             }),
-            invalidatesTags: ['users'],
+            providesTags: ['users'],
         }),
         acceptFollowRequest: builder.mutation({
             query: (payload) => ({
@@ -87,6 +103,7 @@ export const usersApi = createApi({
 export const {
     useGetAllUsersQuery,
     useGetUserQuery,
+    useGetFriendsQuery,
     useUnfollowUserMutation,
     useShowUserProfileQuery,
     useFollowUserMutation,

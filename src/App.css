@@ -14,7 +14,7 @@ body {
 .feed-main-container {
     background-color: #f3f6f9;
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
 }
 
 .form-container {
@@ -175,8 +175,8 @@ label {
 }
 
 .profile-photo {
-    width: 80px !important;
-    height: 80px !important;
+    width: 70px !important;
+    height: 70px !important;
     border-radius: 50%;
     border: 2px solid #c13584;
 }
@@ -435,4 +435,9 @@ label {
     color: #c13584;
     height: 100vh;
     text-align: center;
+}
+
+.follow-button {
+    background-color: #c13584 !important;
+    color: white !important;
 }

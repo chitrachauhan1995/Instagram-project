@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useGetUserQuery } from '../services/users';
@@ -8,17 +8,10 @@ export default function Conversation({
     currentUser,
     isNewUsers,
 }) {
-    const queryParams = useMemo(() => {
-        if (!isNewUsers) {
-            return {
-                user_id: conversation?.members?.find(
-                    (m) => m !== currentUser?._id
-                ),
-            };
-        }
-        return '';
-    }, [conversation?.members, currentUser?._id, isNewUsers]);
-    const { data } = useGetUserQuery(queryParams);
+
+    const { data } = useGetUserQuery({user_id: conversation?.members?.find((m) => m !== currentUser?._id)}, {
+        skip: !conversation?.members || !currentUser?._id,
+    });
 
     const [user, setUser] = useState(null);
 

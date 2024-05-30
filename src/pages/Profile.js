@@ -16,7 +16,9 @@ const Profile = () => {
     const [page, setPage] = useState(1);
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-    const { data } = useGetUserQuery({ user_id: currentUser._id });
+    const { data, isLoading } = useGetUserQuery({ user_id: currentUser._id }, {
+        skip: !currentUser?._id
+    });
     const queryParams = useMemo(() => {
         return {
             page,
@@ -24,7 +26,7 @@ const Profile = () => {
             search: searchValue ?? '',
         };
     }, [page, searchValue]);
-    const { data: postData } = useGetUserFeedPostQuery(queryParams);
+    const { data: postData, isLoading: postDataLoading } = useGetUserFeedPostQuery(queryParams);
 
     const [user, setUser] = useState();
     const [posts, setPosts] = useState({ data: [], total: 0 });
@@ -47,6 +49,14 @@ const Profile = () => {
     const editProfileModal = () => {
         setModal(!modal);
     };
+
+    if (isLoading || postDataLoading) {
+        return (
+            <div className="vh-100 vw-100 d-flex align-items-center justify-content-center">
+                Loading...
+            </div>
+        );
+    }
 
     return (
         <div className="d-flex flex-column justify-content-center profile-section">
@@ -78,6 +88,16 @@ const Profile = () => {
                             onClick={editProfileModal}
                         />
                     </div>
+                    <div className="d-flex justify-content-center">
+                        <div className="d-flex flex-column align-items-center p-1">
+                            <span>Followers</span>
+                            <span>{user?.followers?.length ?? 0}</span>
+                        </div>
+                        <div className="d-flex flex-column align-items-center p-1">
+                            <span>Following</span>
+                            <span>{user?.following?.length ?? 0}</span>
+                        </div>
+                    </div>
                 </div>
                 {modal && (
                     <EditProfile toggleModal={editProfileModal} user={user} />
@@ -85,7 +105,7 @@ const Profile = () => {
             </div>
             <div className="feed-main-container h-100">
                 <div className="d-flex flex-column">
-                    <h4 className="text-center">POSTS</h4>
+                    <h4 className="text-center">My Posts</h4>
                     <div className="feed-container">
                         {posts?.data?.map((post, index) => (
                             <form

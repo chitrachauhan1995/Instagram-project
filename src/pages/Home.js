@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 import { useGetFeedPostQuery } from '../services/posts';
 import { SearchContext } from '../contexts/SearchContext';
+import FollowersList from '../components/FollowersList';
 
 const Home = () => {
     const { searchValue } = useContext(SearchContext);
@@ -32,6 +33,7 @@ const Home = () => {
             </div>
         );
     }
+
     if (data && !posts?.data?.length) {
         return <div className="text-center">No posts found!</div>;
     }
@@ -46,7 +48,15 @@ const Home = () => {
             <div className="d-flex flex-column">
                 <div className="feed-container">
                     {posts?.data?.map((post, index) => (
-                        <form className="post-card p-4" key={index} style={{'maxHeight': isShowFullDescription ? 'max-content' : ''}}>
+                        <form
+                            className="post-card p-4"
+                            key={index}
+                            style={{
+                                maxHeight: isShowFullDescription
+                                    ? 'max-content'
+                                    : '',
+                            }}
+                        >
                             <div className="card-body d-flex flex-column">
                                 <div className="d-flex align-items-center justify-content-start">
                                     {post.userData?.profilePhoto ? (
@@ -75,7 +85,16 @@ const Home = () => {
                                 </div>
                                 <div className="d-flex flex-column">
                                     {post.description && (
-                                        <p className={isShowFullDescription ? 'mt-2 cursor-pointer' : 'mt-2 cursor-pointer post-description'} onClick={() => setIsShowFullDescription(true)}>
+                                        <p
+                                            className={
+                                                isShowFullDescription
+                                                    ? 'mt-2 cursor-pointer'
+                                                    : 'mt-2 cursor-pointer post-description'
+                                            }
+                                            onClick={() =>
+                                                setIsShowFullDescription(true)
+                                            }
+                                        >
                                             {post.description}
                                         </p>
                                     )}
@@ -106,6 +125,7 @@ const Home = () => {
                     ''
                 )}
             </div>
+            <FollowersList />
         </div>
     );
 };

@@ -7,7 +7,7 @@ import Message from '../components/Message';
 import { useGetAllUsersQuery } from '../services/users';
 
 const Messenger = () => {
-    const { data } = useGetAllUsersQuery();
+    const { data, isLoading } = useGetAllUsersQuery();
 
     const [conversations, setConversations] = useState([]);
     const [newConversations, setNewConversations] = useState([]);
@@ -181,6 +181,14 @@ const Messenger = () => {
             console.log(err);
         }
     };
+
+    if (isLoading) {
+        return (
+            <div className="vh-100 vw-100 d-flex align-items-center justify-content-center">
+                Loading...
+            </div>
+        );
+    }
 
     return (
         <>
