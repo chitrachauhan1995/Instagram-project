@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import { useCreatePostMutation } from '../services/posts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { uploadPhoto } from '../utils/fileUpload';
 
 const AddNewPost = ({ toggleModal }) => {
     const [formValues, setFormValues] = useState({});
@@ -35,27 +36,12 @@ const AddNewPost = ({ toggleModal }) => {
         }
     };
 
-    const convertFileToBase64 = (file, callBack) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-            callBack(reader.result);
-        };
-        reader.readAsDataURL(file);
-    };
-
     const photoUpload = async (e) => {
-        e.preventDefault();
-        const file = e.target.files[0];
-        if (file) {
+        if (e.target.files[0]) {
+            const { file, imagePreview, base64 } = await uploadPhoto(e);
             setFile(file);
-            setImagePreview(URL.createObjectURL(e.target.files[0]));
-            try {
-                await convertFileToBase64(file, (base64String) => {
-                    setBase64(base64String);
-                });
-            } catch (error) {
-                console.error('Error converting file to base64:', error);
-            }
+            setImagePreview(imagePreview);
+            setBase64(base64);
         }
     };
 

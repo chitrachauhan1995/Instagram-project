@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { userValidation } from '../utils/validation';
 import { useUpdateUserProfileMutation } from '../services/users';
+import { uploadPhoto } from '../utils/fileUpload';
 
 const EditProfile = ({ toggleModal, user }) => {
     const [formValues, setFormValues] = useState({});
@@ -22,27 +23,12 @@ const EditProfile = ({ toggleModal, user }) => {
         setFormValues({ ...formValues, [name]: value });
     };
 
-    const convertFileToBase64 = (file, callBack) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-            callBack(reader.result);
-        };
-        reader.readAsDataURL(file);
-    };
-
     const photoUpload = async (e) => {
-        e.preventDefault();
-        const file = e.target.files[0];
-        if (file) {
+        if (e.target.files[0]) {
+            const { file, imagePreview, base64 } = await uploadPhoto(e);
             setFile(file);
-            setImagePreview(URL.createObjectURL(e.target.files[0]));
-            try {
-                await convertFileToBase64(file, (base64String) => {
-                    setBase64(base64String);
-                });
-            } catch (error) {
-                console.error('Error converting file to base64:', error);
-            }
+            setImagePreview(imagePreview);
+            setBase64(base64);
         }
     };
 
@@ -50,7 +36,6 @@ const EditProfile = ({ toggleModal, user }) => {
         e.preventDefault();
         const errors = userValidation(formValues);
         setFormErrors(errors);
-        console.log('formValues', formValues);
         if (!Object.keys(errors)?.length) {
             const payload = Object.assign({}, formValues);
             if (file) {
