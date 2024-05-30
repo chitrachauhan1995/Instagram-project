@@ -17,7 +17,7 @@ export default function Conversation({
             };
         }
         return '';
-    }, [conversation?.members]);
+    }, [conversation?.members, currentUser?._id, isNewUsers]);
     const { data } = useGetUserQuery(queryParams);
 
     const [user, setUser] = useState(null);

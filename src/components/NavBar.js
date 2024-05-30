@@ -23,6 +23,14 @@ export default function NavBar() {
 
     const { searchValue, setSearchValue } = useContext(SearchContext);
 
+    const handleSearch = (e) => {
+        setSearchValue(e);
+    };
+
+    const searchFeed = useMemo(() => {
+        return debounce(handleSearch, 1000);
+    }, [searchValue]);
+
     useEffect(() => {
         const user = localStorage.getItem('currentUser');
         if (user) {
@@ -31,7 +39,7 @@ export default function NavBar() {
         return () => {
             searchFeed.cancel();
         };
-    }, []);
+    }, [searchFeed]);
 
     const logout = () => {
         Cookies.remove('token');
@@ -54,14 +62,6 @@ export default function NavBar() {
     const toggleModal = () => {
         setModal(!modal);
     };
-
-    const handleSearch = (e) => {
-        setSearchValue(e);
-    };
-
-    const searchFeed = useMemo(() => {
-        return debounce(handleSearch, 1000);
-    }, [searchValue]);
 
     return (
         <header className="header mid d-flex justify-content-between align-items-center navbar">
