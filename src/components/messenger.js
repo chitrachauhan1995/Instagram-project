@@ -7,7 +7,7 @@ import { useGetAllUsersQuery } from '../services/users';
 import { flatten } from 'lodash';
 
 export default function Messenger() {
-    const { data, error, isLoading } = useGetAllUsersQuery();
+    const { data } = useGetAllUsersQuery();
     const [conversations, setConversations] = useState([]);
     const [newConversations, setNewConversations] = useState([]);
     const [currentChat, setCurrentChat] = useState(null);

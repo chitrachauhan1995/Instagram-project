@@ -17,7 +17,7 @@ export default function Profile() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     const [isShowFullDescription, setIsShowFullDescription] = useState(false);
 
-    const { data, isLoading, error } = useGetUserQuery({user_id: currentUser._id});
+    const { data } = useGetUserQuery({user_id: currentUser._id});
     const queryParams = useMemo(() => {
         return {
             page,
@@ -27,8 +27,6 @@ export default function Profile() {
     }, [page, searchValue]);
     const {
         data: postData,
-        isLoading: isPostLoading,
-        error: isPostError,
     } = useGetUserFeedPostQuery(queryParams);
     const [user, setUser] = useState();
     const [posts, setPosts] = useState({ data: [], total: 0 });

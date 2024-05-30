@@ -8,6 +8,7 @@ import PrivateRoutes from './components/PrivateRoutes';
 import socketClient from 'socket.io-client';
 import Messenger from './components/messenger';
 import PageNotFound from './components/pageNotFound';
+import PublicRoutes from './components/PublicRoutes';
 
 const SERVER = 'http://localhost:5000/';
 
@@ -24,7 +25,15 @@ function App() {
                     <Route exact path="/profile" element={<Profile />} />
                     <Route exact path="/chats" element={<Messenger />} />
                 </Route>
-                <Route exact path="/" element={<SignIn />} />
+                <Route
+                    exact
+                    path="/"
+                    element={
+                        <PublicRoutes>
+                            <SignIn />
+                        </PublicRoutes>
+                    }
+                />
                 <Route path="*" element={<PageNotFound />} />
             </Routes>
         </BrowserRouter>

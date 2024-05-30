@@ -20,7 +20,7 @@ export default function Conversation({
         return '';
     }, [conversation?.members]);
 
-    const { data, isLoading, error } = useGetUserQuery(queryParams);
+    const { data } = useGetUserQuery(queryParams);
     useEffect(() => {
         setUser(data?.data);
     }, [data]);

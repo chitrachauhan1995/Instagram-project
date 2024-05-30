@@ -17,9 +17,8 @@ export default function SignIn() {
     };
     const [formValues, setFormValues] = useState(intialValues);
     const [formErrors, setFormErrors] = useState({});
-    const [isSubmit, setIsSubmit] = useState(false);
     const navigate = useNavigate();
-    const { token, setToken } = useToken();
+    const { setToken } = useToken();
 
     const dispatch = useDispatch();
 
@@ -39,10 +38,9 @@ export default function SignIn() {
         const errors = userValidation(formValues, authMode);
         setFormErrors(errors);
         if (!Object.keys(errors)?.length) {
-            setIsSubmit(true);
             setFormValues(intialValues);
             setFormErrors({});
-            if (authMode == 'signin') {
+            if (authMode === 'signin') {
                 const { payload } = await dispatch(loginUser(formValues));
                 if (payload?.success) {
                     toast.success('Login successful!');
@@ -160,9 +158,6 @@ export default function SignIn() {
                                     Submit
                                 </button>
                             </div>
-                            <p className="forgot-password text-right mt-2">
-                                Forgot <a href="#">password?</a>
-                            </p>
                         </div>
                     </form>
                 </div>
@@ -228,9 +223,6 @@ export default function SignIn() {
                                         Submit
                                     </button>
                                 </div>
-                                <p className="text-center mt-2">
-                                    Forgot <a href="#">password?</a>
-                                </p>
                             </div>
                         </form>
                     </div>
