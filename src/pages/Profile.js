@@ -1,23 +1,22 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
-import {useGetUserQuery} from '../services/users';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faCircleUser,
     faEdit,
     faUserAlt,
 } from '@fortawesome/free-solid-svg-icons';
-import { useGetUserFeedPostQuery } from '../services/posts';
 import ReactPaginate from 'react-paginate';
-import { SearchContext } from '../context/searchContext';
-import EditProfile from './editProfile';
+import { useGetUserQuery } from '../services/users';
+import { useGetUserFeedPostQuery } from '../services/posts';
+import { SearchContext } from '../contexts/SearchContext';
+import EditProfile from '../components/EditProfile';
 
-export default function Profile() {
+const Profile = () => {
     const { searchValue } = useContext(SearchContext);
     const [page, setPage] = useState(1);
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    const [isShowFullDescription, setIsShowFullDescription] = useState(false);
 
-    const { data } = useGetUserQuery({user_id: currentUser._id});
+    const { data } = useGetUserQuery({ user_id: currentUser._id });
     const queryParams = useMemo(() => {
         return {
             page,
@@ -25,12 +24,12 @@ export default function Profile() {
             search: searchValue ?? '',
         };
     }, [page, searchValue]);
-    const {
-        data: postData,
-    } = useGetUserFeedPostQuery(queryParams);
+    const { data: postData } = useGetUserFeedPostQuery(queryParams);
+
     const [user, setUser] = useState();
     const [posts, setPosts] = useState({ data: [], total: 0 });
     const [modal, setModal] = useState(false);
+    const [isShowFullDescription, setIsShowFullDescription] = useState(false);
 
     useEffect(() => {
         if (data) {
@@ -89,7 +88,15 @@ export default function Profile() {
                     <h4 className="text-center">POSTS</h4>
                     <div className="feed-container">
                         {posts?.data?.map((post, index) => (
-                            <form className="post-card p-4" key={index} style={{'maxHeight': isShowFullDescription ? 'max-content' : ''}}>
+                            <form
+                                className="post-card p-4"
+                                key={index}
+                                style={{
+                                    maxHeight: isShowFullDescription
+                                        ? 'max-content'
+                                        : '',
+                                }}
+                            >
                                 <div className="card-body d-flex flex-column">
                                     <div className="d-flex align-items-center justify-content-start">
                                         {user?.profilePhoto ? (
@@ -118,7 +125,18 @@ export default function Profile() {
                                     </div>
                                     <div className="d-flex flex-column">
                                         {post.description && (
-                                            <p className={isShowFullDescription ? 'mt-2 cursor-pointer' : 'mt-2 cursor-pointer post-description'} onClick={() => setIsShowFullDescription(true)}>
+                                            <p
+                                                className={
+                                                    isShowFullDescription
+                                                        ? 'mt-2 cursor-pointer'
+                                                        : 'mt-2 cursor-pointer post-description'
+                                                }
+                                                onClick={() =>
+                                                    setIsShowFullDescription(
+                                                        true
+                                                    )
+                                                }
+                                            >
                                                 {post.description}
                                             </p>
                                         )}
@@ -152,4 +170,5 @@ export default function Profile() {
             </div>
         </div>
     );
-}
+};
+export default Profile;

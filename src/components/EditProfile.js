@@ -2,17 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-import { userValidation } from '../utils/validation';
 import { useUpdateUserProfileMutation } from '../services/users';
-import { uploadPhoto } from '../utils/fileUpload';
+import { userValidation } from '../utils/validation';
+import { uploadPhoto } from '../utils/file-upload';
 
-const EditProfile = ({ toggleModal, user }) => {
+export default function EditProfile({ toggleModal, user }) {
+    const [updateUserProfile] = useUpdateUserProfileMutation();
+
     const [formValues, setFormValues] = useState({});
     const [formErrors, setFormErrors] = useState({});
     const [imagePreview, setImagePreview] = useState('');
     const [file, setFile] = useState('');
     const [base64, setBase64] = useState('');
-    const [updateUserProfile] = useUpdateUserProfileMutation();
 
     useEffect(() => {
         setFormValues(user);
@@ -216,4 +217,3 @@ const EditProfile = ({ toggleModal, user }) => {
         </div>
     );
 };
-export default EditProfile;

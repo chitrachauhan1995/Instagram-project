@@ -1,15 +1,15 @@
-import { Outlet, Navigate } from 'react-router-dom';
 import React from 'react';
+import { Outlet, Navigate } from 'react-router-dom';
 import useToken from '../hooks/useToken';
-import Navbar from './navbar';
-import { SearchProvider } from '../context/searchContext';
+import NavBar from './NavBar';
+import { SearchProvider } from '../contexts/SearchContext';
 
-const PrivateRoutes = () => {
+export default function PrivateRoutes() {
     const { token } = useToken();
     return token ? (
         <>
             <SearchProvider>
-                <Navbar />
+                <NavBar />
                 <div className="main-container">
                     <Outlet />
                 </div>
@@ -19,5 +19,3 @@ const PrivateRoutes = () => {
         <Navigate to="/" />
     );
 };
-
-export default PrivateRoutes;

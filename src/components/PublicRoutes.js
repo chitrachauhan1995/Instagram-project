@@ -1,9 +1,8 @@
-import useToken from '../hooks/useToken';
 import React from 'react';
 import { Navigate } from 'react-router';
+import useToken from '../hooks/useToken';
 
-const PublicRoutes = ({ children }) => {
+export default function PublicRoutes({ children }) {
     const { token } = useToken();
     return token ? <Navigate to="/home" /> : children;
 };
-export default PublicRoutes;

@@ -1,14 +1,14 @@
-import './App.css';
-import SignIn from './components/sign-in';
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from './components/home';
-import Profile from './components/profile';
-import PrivateRoutes from './components/PrivateRoutes';
 import socketClient from 'socket.io-client';
-import Messenger from './components/messenger';
-import PageNotFound from './components/pageNotFound';
+import SignIn from './pages/SignIn';
+import Home from './pages/Home';
+import Profile from './pages/Profile';
+import Messenger from './pages/Messenger';
+import PageNotFound from './pages/PageNotFound';
+import PrivateRoutes from './components/PrivateRoutes';
 import PublicRoutes from './components/PublicRoutes';
+import './App.css';
 
 const SERVER = 'http://localhost:5000/';
 

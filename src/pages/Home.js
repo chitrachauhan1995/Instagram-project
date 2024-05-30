@@ -1,14 +1,15 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
-import { useGetFeedPostQuery } from '../services/posts';
 import ReactPaginate from 'react-paginate';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
-import { SearchContext } from '../context/searchContext';
+import { useGetFeedPostQuery } from '../services/posts';
+import { SearchContext } from '../contexts/SearchContext';
 
 const Home = () => {
     const { searchValue } = useContext(SearchContext);
     const [page, setPage] = useState(1);
     const [isShowFullDescription, setIsShowFullDescription] = useState(false);
+
     const queryParams = useMemo(() => {
         return {
             page,

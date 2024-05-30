@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
-import { useCreatePostMutation } from '../services/posts';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-import { uploadPhoto } from '../utils/fileUpload';
+import { useCreatePostMutation } from '../services/posts';
+import { uploadPhoto } from '../utils/file-upload';
 
-const AddNewPost = ({ toggleModal }) => {
+export default function AddPost({ toggleModal }) {
+    const [createUserPost] = useCreatePostMutation();
+
     const [formValues, setFormValues] = useState({});
     const [formErrors, setFormErrors] = useState({});
     const [imagePreview, setImagePreview] = useState('');
     const [file, setFile] = useState('');
     const [base64, setBase64] = useState('');
-    const [createUserPost] = useCreatePostMutation();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -179,5 +180,4 @@ const AddNewPost = ({ toggleModal }) => {
             </div>
         </div>
     );
-};
-export default AddNewPost;
+}

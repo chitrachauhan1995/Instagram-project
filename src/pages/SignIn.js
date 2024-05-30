@@ -3,11 +3,10 @@ import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import useToken from '../hooks/useToken';
-import { loginUser, signupUser } from '../services/authSlice';
+import { loginUser, signUpUser } from '../services/auth';
 import { userValidation } from '../utils/validation';
 
-export default function SignIn() {
-    let [authMode, setAuthMode] = useState('signin');
+const SignIn = () => {
     const intialValues = {
         firstname: '',
         lastname: '',
@@ -17,6 +16,7 @@ export default function SignIn() {
     };
     const [formValues, setFormValues] = useState(intialValues);
     const [formErrors, setFormErrors] = useState({});
+    const [authMode, setAuthMode] = useState('signin');
     const navigate = useNavigate();
     const { setToken } = useToken();
 
@@ -41,7 +41,7 @@ export default function SignIn() {
             setFormValues(intialValues);
             setFormErrors({});
             if (authMode === 'signin') {
-                const { payload } = await dispatch(loginUser(formValues));
+                const { payload } = await dispatch(await loginUser(formValues));
                 if (payload?.success) {
                     toast.success('Login successful!');
                     setToken(payload.data.accessToken);
@@ -54,7 +54,7 @@ export default function SignIn() {
             } else {
                 setAuthMode('signin');
                 const { payload } = dispatch(
-                    signupUser({ private: true, ...formValues })
+                    await signUpUser({ private: true, ...formValues })
                 );
                 if (payload?.success) {
                     toast.success('Registration successful!');
@@ -230,4 +230,5 @@ export default function SignIn() {
             )}
         </>
     );
-}
+};
+export default SignIn;

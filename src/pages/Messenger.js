@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
-import Conversation from './conversation';
-import Message from './message';
 import Cookies from 'js-cookie';
-import { useGetAllUsersQuery } from '../services/users';
 import { flatten } from 'lodash';
+import Conversation from '../components/Conversation';
+import Message from '../components/Message';
+import { useGetAllUsersQuery } from '../services/users';
 
-export default function Messenger() {
+const Messenger = () => {
     const { data } = useGetAllUsersQuery();
+
     const [conversations, setConversations] = useState([]);
     const [newConversations, setNewConversations] = useState([]);
     const [currentChat, setCurrentChat] = useState(null);
@@ -284,3 +285,4 @@ export default function Messenger() {
         </>
     );
 }
+export default Messenger;

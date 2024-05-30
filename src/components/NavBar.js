@@ -10,16 +10,18 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import Cookies from 'js-cookie';
 import { useLocation, useNavigate } from 'react-router';
-import AddNewPost from './addNewPost';
 import { debounce } from 'lodash';
-import { SearchContext } from '../context/searchContext';
+import AddPost from './AddPost';
+import { SearchContext } from '../contexts/SearchContext';
 
-const Navbar = () => {
+export default function NavBar() {
     const navigate = useNavigate();
+    const location = useLocation();
+
     const [user, setUser] = useState();
     const [modal, setModal] = useState(false);
+
     const { searchValue, setSearchValue } = useContext(SearchContext);
-    const location = useLocation();
 
     useEffect(() => {
         const user = localStorage.getItem('currentUser');
@@ -64,21 +66,22 @@ const Navbar = () => {
     return (
         <header className="header mid d-flex justify-content-between align-items-center navbar">
             <h4 className="postgram">Postgram</h4>
-            {(location.pathname === '/home' || location.pathname === '/profile') && (
-                    <div className="d-flex align-items-center justify-content-center search-feed">
-                        <div className="input-group m-1">
-                            <div className="input-group-text">
-                                <FontAwesomeIcon icon={faSearch} />
-                            </div>
-                            <input
-                                type="text"
-                                className="form-control"
-                                placeholder="Search Feed"
-                                onChange={(e) => searchFeed(e.target.value)}
-                            />
+            {(location.pathname === '/home' ||
+                location.pathname === '/profile') && (
+                <div className="d-flex align-items-center justify-content-center search-feed">
+                    <div className="input-group m-1">
+                        <div className="input-group-text">
+                            <FontAwesomeIcon icon={faSearch} />
                         </div>
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Search Feed"
+                            onChange={(e) => searchFeed(e.target.value)}
+                        />
                     </div>
-                )}
+                </div>
+            )}
             <div className="d-flex justify-content-between align-items-center">
                 <div className="m-3 cursor-pointer">
                     <FontAwesomeIcon
@@ -103,9 +106,7 @@ const Navbar = () => {
                         icon={faPeopleGroup}
                         size="xl"
                         className="cursor-pointer"
-                        color={
-                            location.pathname === '/chats' ? '#C13584' : ''
-                        }
+                        color={location.pathname === '/chats' ? '#C13584' : ''}
                     />
                 </div>
                 <div className="m-3 cursor-pointer">
@@ -133,8 +134,7 @@ const Navbar = () => {
                     />
                 </div>
             </div>
-            {modal && <AddNewPost toggleModal={toggleModal} />}
+            {modal && <AddPost toggleModal={toggleModal} />}
         </header>
     );
 };
-export default Navbar;

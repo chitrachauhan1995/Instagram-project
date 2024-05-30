@@ -1,14 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useGetUserQuery } from '../services/users';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useGetUserQuery } from '../services/users';
 
 export default function Conversation({
     conversation,
     currentUser,
     isNewUsers,
 }) {
-    const [user, setUser] = useState(null);
     const queryParams = useMemo(() => {
         if (!isNewUsers) {
             return {
@@ -19,8 +18,10 @@ export default function Conversation({
         }
         return '';
     }, [conversation?.members]);
-
     const { data } = useGetUserQuery(queryParams);
+
+    const [user, setUser] = useState(null);
+
     useEffect(() => {
         setUser(data?.data);
     }, [data]);
