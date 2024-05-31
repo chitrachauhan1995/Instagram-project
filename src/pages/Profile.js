@@ -3,18 +3,26 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faCircleUser,
     faEdit,
+    faEllipsisVertical,
     faUserAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import ReactPaginate from 'react-paginate';
+import { Dropdown } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 import { useGetUserQuery } from '../services/users';
-import { useGetUserFeedPostQuery } from '../services/posts';
+import {
+    useDeletePostMutation,
+    useGetUserFeedPostQuery,
+} from '../services/posts';
 import { SearchContext } from '../contexts/SearchContext';
 import EditProfile from '../components/EditProfile';
+import AddPost from '../components/AddPost';
 
 const Profile = () => {
     const { searchValue } = useContext(SearchContext);
     const [page, setPage] = useState(1);
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const [deleteUserPost] = useDeletePostMutation();
 
     const { data, isLoading, error } = useGetUserQuery(
         { user_id: currentUser._id },
@@ -33,6 +41,8 @@ const Profile = () => {
         useGetUserFeedPostQuery(queryParams);
 
     const [user, setUser] = useState();
+    const [editPost, setEditPost] = useState({});
+    const [postModal, setPostModal] = useState(false);
     const [posts, setPosts] = useState({ data: [], total: 0 });
     const [modal, setModal] = useState(false);
     const [isShowFullDescription, setIsShowFullDescription] = useState(false);
@@ -52,6 +62,22 @@ const Profile = () => {
 
     const editProfileModal = () => {
         setModal(!modal);
+    };
+
+    const editPostModal = () => {
+        setPostModal(!postModal);
+    };
+
+    const updatePost = async (post) => {
+        setPostModal(true);
+        setEditPost(post);
+    };
+
+    const deletePost = async (id) => {
+        const response = await deleteUserPost(id);
+        if (response?.data?.status === 'success') {
+            toast.success(response.data.message);
+        }
     };
 
     if (isLoading || postDataLoading) {
@@ -118,66 +144,103 @@ const Profile = () => {
                     <h4 className="text-center">My Posts</h4>
                     <div className="feed-container">
                         {posts?.data?.map((post, index) => (
-                            <form
-                                className="post-card p-4"
-                                key={index}
-                                style={{
-                                    maxHeight: isShowFullDescription
-                                        ? 'max-content'
-                                        : '',
-                                }}
-                            >
-                                <div className="card-body d-flex flex-column">
-                                    <div className="d-flex align-items-center justify-content-start">
-                                        {user?.profilePhoto ? (
-                                            <img
-                                                src={user.profilePhoto}
-                                                alt="avatar"
-                                                className="profile-photo"
-                                            />
-                                        ) : (
-                                            <FontAwesomeIcon
-                                                icon={faCircleUser}
-                                                size="4x"
-                                                color="#dee2e6"
-                                            />
-                                        )}
-                                        <div className="d-flex flex-column p-2">
-                                            <div className="fw-bold">
-                                                {user?.firstname +
-                                                    ' ' +
-                                                    user?.lastname}
+                            <>
+                                <form
+                                    className="post-card p-4"
+                                    key={index}
+                                    style={{
+                                        maxHeight: isShowFullDescription
+                                            ? 'max-content'
+                                            : '',
+                                    }}
+                                >
+                                    <div className="card-body d-flex flex-column">
+                                        <div className="d-flex align-items-center justify-content-between">
+                                            <div className="d-flex align-items-center justify-content-start">
+                                                {user?.profilePhoto ? (
+                                                    <img
+                                                        src={user.profilePhoto}
+                                                        alt="avatar"
+                                                        className="profile-photo"
+                                                    />
+                                                ) : (
+                                                    <FontAwesomeIcon
+                                                        icon={faCircleUser}
+                                                        size="4x"
+                                                        color="#dee2e6"
+                                                    />
+                                                )}
+                                                <div className="d-flex flex-column p-2">
+                                                    <div className="fw-bold">
+                                                        {user?.firstname +
+                                                            ' ' +
+                                                            user?.lastname}
+                                                    </div>
+                                                    <p className="text-muted">
+                                                        {post.title}
+                                                    </p>
+                                                </div>
                                             </div>
-                                            <p className="text-muted">
-                                                {post.title}
-                                            </p>
+                                            <Dropdown>
+                                                <Dropdown.Toggle>
+                                                    <FontAwesomeIcon
+                                                        icon={
+                                                            faEllipsisVertical
+                                                        }
+                                                        size="lg"
+                                                        color="#000"
+                                                    />
+                                                </Dropdown.Toggle>
+                                                <Dropdown.Menu>
+                                                    <Dropdown.Item
+                                                        onClick={() =>
+                                                            updatePost(post)
+                                                        }
+                                                    >
+                                                        Edit
+                                                    </Dropdown.Item>
+                                                    <Dropdown.Item
+                                                        onClick={() =>
+                                                            deletePost(post._id)
+                                                        }
+                                                    >
+                                                        Delete
+                                                    </Dropdown.Item>
+                                                </Dropdown.Menu>
+                                            </Dropdown>
+                                        </div>
+                                        <div className="d-flex flex-column">
+                                            {post.description && (
+                                                <p
+                                                    className={
+                                                        isShowFullDescription
+                                                            ? 'mt-2 cursor-pointer'
+                                                            : 'mt-2 cursor-pointer post-description'
+                                                    }
+                                                    onClick={() =>
+                                                        setIsShowFullDescription(
+                                                            true
+                                                        )
+                                                    }
+                                                >
+                                                    {post.description}
+                                                </p>
+                                            )}
+                                            <img
+                                                src={post.filePath}
+                                                alt="avatar"
+                                                className="img-fluid post-photo mt-2"
+                                            />
                                         </div>
                                     </div>
-                                    <div className="d-flex flex-column">
-                                        {post.description && (
-                                            <p
-                                                className={
-                                                    isShowFullDescription
-                                                        ? 'mt-2 cursor-pointer'
-                                                        : 'mt-2 cursor-pointer post-description'
-                                                }
-                                                onClick={() =>
-                                                    setIsShowFullDescription(
-                                                        true
-                                                    )
-                                                }
-                                            >
-                                                {post.description}
-                                            </p>
-                                        )}
-                                        <img
-                                            src={post.filePath}
-                                            alt="avatar"
-                                            className="img-fluid post-photo mt-2"
-                                        />
-                                    </div>
-                                </div>
-                            </form>
+                                </form>
+                                {postModal && (
+                                    <AddPost
+                                        toggleModal={editPostModal}
+                                        post={editPost}
+                                    />
+                                )}
+                            </>
                         ))}
                     </div>
                     {posts?.data?.length ? (

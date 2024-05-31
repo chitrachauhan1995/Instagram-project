@@ -441,3 +441,18 @@ label {
     background-color: #c13584 !important;
     color: white !important;
 }
+
+.dropdown-toggle::after {
+    display: none !important;
+}
+
+.dropdown-toggle{
+    background: transparent !important;
+    border: none !important;
+}
+
+.dropdown-item:hover {
+    background-color: #c13584 !important;
+    color: white !important;
+}
+

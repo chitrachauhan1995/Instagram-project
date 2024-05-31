@@ -73,11 +73,28 @@ export const postsApi = createApi({
             }),
             providesTags: ['posts'],
         }),
+        deletePost: builder.mutation({
+            query: (id) => ({
+                url: `/posts/delete-post/${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['posts'],
+        }),
+        updatePost: builder.mutation({
+            query: (payload) => ({
+                url: `/posts/update-post`,
+                method: 'PUT',
+                body: payload,
+            }),
+            invalidatesTags: ['posts'],
+        }),
     }),
 });
 
 export const {
     useCreatePostMutation,
+    useDeletePostMutation,
+    useUpdatePostMutation,
     useGetFeedPostQuery,
     useGetUserFeedPostQuery,
 } = postsApi;

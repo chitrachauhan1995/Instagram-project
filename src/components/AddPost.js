@@ -2,13 +2,17 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-import { useCreatePostMutation } from '../services/posts';
+import {
+    useCreatePostMutation,
+    useUpdatePostMutation,
+} from '../services/posts';
 import { uploadPhoto } from '../utils/file-upload';
 
-export default function AddPost({ toggleModal }) {
+export default function AddPost({ toggleModal, post }) {
     const [createUserPost] = useCreatePostMutation();
+    const [updateUserPost] = useUpdatePostMutation();
 
-    const [formValues, setFormValues] = useState({});
+    const [formValues, setFormValues] = useState(post ?? {});
     const [formErrors, setFormErrors] = useState({});
     const [imagePreview, setImagePreview] = useState('');
     const [file, setFile] = useState('');
@@ -24,15 +28,24 @@ export default function AddPost({ toggleModal }) {
         const errors = validate(formValues);
         setFormErrors(errors);
         if (!Object.keys(errors)?.length) {
-            let payload = formValues;
+            const payload = Object.assign({}, formValues);
             if (file) {
                 payload.filePath = base64;
             }
-            const response = await createUserPost(payload);
-            if (response?.data?.status === 'success') {
-                toast.success('successfully posted!');
-                setFormValues(null);
-                toggleModal();
+            if (post) {
+                const response = await updateUserPost(payload);
+                if (response?.data?.status === 'success') {
+                    toast.success('Post successfully updated!');
+                    setFormValues(null);
+                    toggleModal();
+                }
+            } else {
+                const response = await createUserPost(payload);
+                if (response?.data?.status === 'success') {
+                    toast.success('successfully posted!');
+                    setFormValues(null);
+                    toggleModal();
+                }
             }
         }
     };
@@ -76,7 +89,7 @@ export default function AddPost({ toggleModal }) {
                         />
                     </div>
                     <div className="modal-body">
-                        <form onSubmit={(e) => createPost(e)}>
+                        <form>
                             <div className="form-group mt-3">
                                 <label>Title</label>
                                 <input
@@ -112,10 +125,14 @@ export default function AddPost({ toggleModal }) {
                                         onChange={photoUpload}
                                         src={imagePreview}
                                     />
-                                    {imagePreview && (
+                                    {(imagePreview || formValues?.filePath) && (
                                         <img
                                             alt="img"
-                                            src={imagePreview}
+                                            src={
+                                                imagePreview
+                                                    ? imagePreview
+                                                    : formValues?.filePath
+                                            }
                                             width="100"
                                             height="100"
                                         />
@@ -168,8 +185,9 @@ export default function AddPost({ toggleModal }) {
                                     Close
                                 </button>
                                 <button
-                                    type="submit"
+                                    type="button"
                                     className="btn btn-primary"
+                                    onClick={(e) => createPost(e)}
                                 >
                                     Save changes
                                 </button>
