@@ -9,6 +9,7 @@ import PageNotFound from './pages/PageNotFound';
 import PrivateRoutes from './components/PrivateRoutes';
 import PublicRoutes from './components/PublicRoutes';
 import './App.css';
+import AuthProvider from './contexts/AuthContext';
 
 const SERVER = 'http://localhost:5000/';
 
@@ -19,23 +20,25 @@ function App() {
     });
     return (
         <BrowserRouter>
-            <Routes>
-                <Route element={<PrivateRoutes />}>
-                    <Route exact path="/home" element={<Home />} />
-                    <Route exact path="/profile" element={<Profile />} />
-                    <Route exact path="/chats" element={<Messenger />} />
-                </Route>
-                <Route
-                    exact
-                    path="/"
-                    element={
-                        <PublicRoutes>
-                            <SignIn />
-                        </PublicRoutes>
-                    }
-                />
-                <Route path="*" element={<PageNotFound />} />
-            </Routes>
+            <AuthProvider>
+                <Routes>
+                    <Route element={<PrivateRoutes />}>
+                        <Route exact path="/home" element={<Home />} />
+                        <Route exact path="/profile" element={<Profile />} />
+                        <Route exact path="/chats" element={<Messenger />} />
+                    </Route>
+                    <Route
+                        exact
+                        path="/"
+                        element={
+                            <PublicRoutes>
+                                <SignIn />
+                            </PublicRoutes>
+                        }
+                    />
+                    <Route path="*" element={<PageNotFound />} />
+                </Routes>
+            </AuthProvider>
         </BrowserRouter>
     );
 }

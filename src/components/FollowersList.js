@@ -8,19 +8,13 @@ import {
     useGetFriendsQuery,
     useUnfollowUserMutation,
 } from '../services/users';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function FollowersList() {
+    const { currentUser } = useAuth();
     const [allUsers, setAllUsers] = useState([]);
-    const [currentUser, setCurrentUser] = useState({});
     const [addFollowUser] = useFollowUserMutation();
     const [removeFollowUser] = useUnfollowUserMutation();
-
-    useEffect(() => {
-        const user = localStorage.getItem('currentUser');
-        if (user) {
-            setCurrentUser(JSON.parse(user));
-        }
-    }, []);
 
     const { data: friendsData, isLoading } = useGetFriendsQuery(
         currentUser?._id,

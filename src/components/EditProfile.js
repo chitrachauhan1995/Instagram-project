@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { useUpdateUserProfileMutation } from '../services/users';
 import { userValidation } from '../utils/validation';
 import { uploadPhoto } from '../utils/file-upload';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function EditProfile({ toggleModal, user }) {
+    const { setCurrentLoggedInUser } = useAuth();
     const [updateUserProfile] = useUpdateUserProfileMutation();
 
     const [formValues, setFormValues] = useState({});
@@ -44,7 +46,7 @@ export default function EditProfile({ toggleModal, user }) {
             }
             const response = await updateUserProfile(payload);
             if (response.data.status === 'success') {
-                localStorage.setItem('currentUser', JSON.stringify(payload));
+                setCurrentLoggedInUser(payload);
                 toast.success('Profile updated!');
                 setFormValues(null);
                 toggleModal();

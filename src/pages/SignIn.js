@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import useToken from '../hooks/useToken';
 import { loginUser, signUpUser } from '../services/auth';
 import { userValidation } from '../utils/validation';
+import { useAuth } from '../contexts/AuthContext';
 
 const SignIn = () => {
     const intialValues = {
@@ -14,12 +15,12 @@ const SignIn = () => {
         email: '',
         password: '',
     };
+    const { setCurrentLoggedInUser } = useAuth();
     const [formValues, setFormValues] = useState(intialValues);
     const [formErrors, setFormErrors] = useState({});
     const [authMode, setAuthMode] = useState('signin');
     const navigate = useNavigate();
     const { setToken } = useToken();
-
     const dispatch = useDispatch();
 
     const handleChange = (e) => {
@@ -45,10 +46,7 @@ const SignIn = () => {
                 if (payload?.success) {
                     toast.success('Login successful!');
                     setToken(payload.data.accessToken);
-                    localStorage.setItem(
-                        'currentUser',
-                        JSON.stringify(payload.data)
-                    );
+                    setCurrentLoggedInUser(payload.data);
                     navigate('/home');
                 }
             } else {

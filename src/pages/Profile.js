@@ -17,11 +17,12 @@ import {
 import { SearchContext } from '../contexts/SearchContext';
 import EditProfile from '../components/EditProfile';
 import AddPost from '../components/AddPost';
+import { useAuth } from '../contexts/AuthContext';
 
 const Profile = () => {
+    const { currentUser } = useAuth();
     const { searchValue } = useContext(SearchContext);
     const [page, setPage] = useState(1);
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     const [deleteUserPost] = useDeletePostMutation();
 
     const { data, isLoading, error } = useGetUserQuery(

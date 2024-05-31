@@ -12,8 +12,10 @@ import {
     useAddMessageMutation,
     useGetMessagesQuery,
 } from '../services/message';
+import { useAuth } from '../contexts/AuthContext';
 
 const Messenger = () => {
+    const { currentUser } = useAuth();
     const [addConversation] = useAddConversationMutation();
     const [addMessage] = useAddMessageMutation();
 
@@ -23,23 +25,16 @@ const Messenger = () => {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
     const [arrivalMessage, setArrivalMessage] = useState(null);
-    const [user, setUser] = useState({});
     const [allUsers, setAllUsers] = useState([]);
     const socket = useRef();
     const scrollRef = useRef();
 
-    useEffect(() => {
-        const user = localStorage.getItem('currentUser');
-        const currentUser = JSON.parse(user);
-        setUser(currentUser);
-    }, []);
-
     const { data, isLoading, error } = useGetAllUsersQuery({
-        skip: !user,
+        skip: !currentUser,
     });
     const { data: conversationsData, isLoading: isConversationsLoading } =
-        useGetConversationsQuery(user._id, {
-            skip: !user?._id || !allUsers,
+        useGetConversationsQuery(currentUser._id, {
+            skip: !currentUser?._id || !allUsers,
         });
     const { data: messagesData, isLoading: isMessagesLoading } =
         useGetMessagesQuery(currentChat?._id, {
@@ -47,8 +42,8 @@ const Messenger = () => {
         });
 
     useEffect(() => {
-        const users = user
-            ? data?.data?.filter((u) => u._id !== user._id)
+        const users = currentUser
+            ? data?.data?.filter((u) => u._id !== currentUser._id)
             : data?.data;
         setAllUsers(users);
     }, [data]);
@@ -86,11 +81,11 @@ const Messenger = () => {
     }, [arrivalMessage, currentChat]);
 
     useEffect(() => {
-        socket.current.emit('addUser', user?._id);
+        socket.current.emit('addUser', currentUser?._id);
         socket.current.on('getUsers', (users) => {
             // console.log('users', users);
         });
-    }, [user]);
+    }, [currentUser]);
 
     useEffect(() => {
         scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -98,7 +93,7 @@ const Messenger = () => {
 
     const setNewConversation = async (receiverId) => {
         const conversation = {
-            senderId: user._id,
+            senderId: currentUser._id,
             receiverId,
         };
         try {
@@ -114,17 +109,17 @@ const Messenger = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const message = {
-            sender: user._id,
+            sender: currentUser._id,
             text: newMessage,
             conversationId: currentChat._id,
         };
 
         const receiverId = currentChat.members.find(
-            (member) => member !== user._id
+            (member) => member !== currentUser._id
         );
 
         const messageBody = {
-            senderId: user._id,
+            senderId: currentUser._id,
             receiverId,
             text: newMessage,
         };
@@ -165,7 +160,7 @@ const Messenger = () => {
                                     >
                                         <Conversation
                                             conversation={c}
-                                            currentUser={user}
+                                            currentUser={currentUser}
                                             key={index}
                                             isNewUsers={false}
                                         />
@@ -188,7 +183,7 @@ const Messenger = () => {
                                     >
                                         <Conversation
                                             conversation={c}
-                                            currentUser={user}
+                                            currentUser={currentUser}
                                             key={index}
                                             isNewUsers={true}
                                         />
@@ -205,7 +200,7 @@ const Messenger = () => {
                         <div className="current-conversation">
                             <Conversation
                                 conversation={currentChat}
-                                currentUser={user}
+                                currentUser={currentUser}
                                 conversations={conversations}
                             />
                         </div>
@@ -219,7 +214,9 @@ const Messenger = () => {
                                         <div ref={scrollRef} key={index}>
                                             <Message
                                                 message={m}
-                                                own={m.sender === user._id}
+                                                own={
+                                                    m.sender === currentUser._id
+                                                }
                                                 key={index}
                                             />
                                         </div>

@@ -13,14 +13,13 @@ import { useLocation, useNavigate } from 'react-router';
 import { debounce } from 'lodash';
 import AddPost from './AddPost';
 import { SearchContext } from '../contexts/SearchContext';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function NavBar() {
+    const { currentUser, removeLoggedInUser } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
-
-    const [user, setUser] = useState();
     const [modal, setModal] = useState(false);
-
     const { searchValue, setSearchValue } = useContext(SearchContext);
 
     const handleSearch = (e) => {
@@ -32,10 +31,6 @@ export default function NavBar() {
     }, [searchValue]);
 
     useEffect(() => {
-        const user = localStorage.getItem('currentUser');
-        if (user) {
-            setUser(JSON.parse(user));
-        }
         return () => {
             searchFeed.cancel();
         };
@@ -43,7 +38,7 @@ export default function NavBar() {
 
     const logout = () => {
         Cookies.remove('token');
-        localStorage.removeItem('currentUser');
+        removeLoggedInUser();
         navigate('/');
     };
 
@@ -121,9 +116,9 @@ export default function NavBar() {
                     />
                 </div>
                 <div className="my-3 mx-4 cursor-pointer">
-                    {user && (
+                    {currentUser && (
                         <span className="p-1">
-                            {user.firstname + ' ' + user.lastname}
+                            {currentUser.firstname + ' ' + currentUser.lastname}
                         </span>
                     )}
                     <FontAwesomeIcon
