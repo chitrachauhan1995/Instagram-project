@@ -16,9 +16,12 @@ const Profile = () => {
     const [page, setPage] = useState(1);
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-    const { data, isLoading } = useGetUserQuery({ user_id: currentUser._id }, {
-        skip: !currentUser?._id
-    });
+    const { data, isLoading, error } = useGetUserQuery(
+        { user_id: currentUser._id },
+        {
+            skip: !currentUser?._id,
+        }
+    );
     const queryParams = useMemo(() => {
         return {
             page,
@@ -26,7 +29,8 @@ const Profile = () => {
             search: searchValue ?? '',
         };
     }, [page, searchValue]);
-    const { data: postData, isLoading: postDataLoading } = useGetUserFeedPostQuery(queryParams);
+    const { data: postData, isLoading: postDataLoading } =
+        useGetUserFeedPostQuery(queryParams);
 
     const [user, setUser] = useState();
     const [posts, setPosts] = useState({ data: [], total: 0 });
@@ -58,6 +62,8 @@ const Profile = () => {
         );
     }
 
+    if (error) return <h4 className="text-center">Something went wrong!</h4>;
+
     return (
         <div className="d-flex flex-column justify-content-center profile-section">
             <div className="d-flex flex-column">
@@ -78,15 +84,19 @@ const Profile = () => {
                         />
                     )}
                     <div className="fw-bold text-center">
-                        <span className="p-1">
-                            {user?.firstname + ' ' + user?.lastname}
-                        </span>
-                        <FontAwesomeIcon
-                            icon={faEdit}
-                            size="lg"
-                            className="cursor-pointer"
-                            onClick={editProfileModal}
-                        />
+                        {user && (
+                            <>
+                                <span className="p-1">
+                                    {user?.firstname + ' ' + user?.lastname}
+                                </span>
+                                <FontAwesomeIcon
+                                    icon={faEdit}
+                                    size="lg"
+                                    className="cursor-pointer"
+                                    onClick={editProfileModal}
+                                />
+                            </>
+                        )}
                     </div>
                     <div className="d-flex justify-content-center">
                         <div className="d-flex flex-column align-items-center p-1">

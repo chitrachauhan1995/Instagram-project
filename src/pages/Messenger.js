@@ -1,13 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
-import Cookies from 'js-cookie';
 import { flatten } from 'lodash';
 import Conversation from '../components/Conversation';
 import Message from '../components/Message';
 import { useGetAllUsersQuery } from '../services/users';
+import {
+    useAddConversationMutation,
+    useGetConversationsQuery,
+} from '../services/conversation';
+import {
+    useAddMessageMutation,
+    useGetMessagesQuery,
+} from '../services/message';
 
 const Messenger = () => {
-    const { data, isLoading } = useGetAllUsersQuery();
+    const [addConversation] = useAddConversationMutation();
+    const [addMessage] = useAddMessageMutation();
 
     const [conversations, setConversations] = useState([]);
     const [newConversations, setNewConversations] = useState([]);
@@ -19,7 +27,46 @@ const Messenger = () => {
     const [allUsers, setAllUsers] = useState([]);
     const socket = useRef();
     const scrollRef = useRef();
-    const token = Cookies.get('token');
+
+    useEffect(() => {
+        const user = localStorage.getItem('currentUser');
+        const currentUser = JSON.parse(user);
+        setUser(currentUser);
+    }, []);
+
+    const { data, isLoading, error } = useGetAllUsersQuery({
+        skip: !user,
+    });
+    const { data: conversationsData, isLoading: isConversationsLoading } =
+        useGetConversationsQuery(user._id, {
+            skip: !user?._id || !allUsers,
+        });
+    const { data: messagesData, isLoading: isMessagesLoading } =
+        useGetMessagesQuery(currentChat?._id, {
+            skip: !currentChat,
+        });
+
+    useEffect(() => {
+        const users = user
+            ? data?.data?.filter((u) => u._id !== user._id)
+            : data?.data;
+        setAllUsers(users);
+    }, [data]);
+
+    useEffect(() => {
+        if (conversationsData) {
+            setConversations(conversationsData);
+            const cUsers = conversationsData.map((c) => c.members);
+            const newConversation = allUsers?.filter(
+                (user) => !flatten(cUsers).includes(user._id)
+            );
+            setNewConversations(newConversation);
+        }
+    }, [conversationsData]);
+
+    useEffect(() => {
+        setMessages(messagesData);
+    }, [messagesData]);
 
     useEffect(() => {
         socket.current = io('http://localhost:5000');
@@ -31,19 +78,6 @@ const Messenger = () => {
             });
         });
     }, []);
-
-    useEffect(() => {
-        const user = localStorage.getItem('currentUser');
-        const currentUser = JSON.parse(user);
-        setUser(currentUser);
-        const users = currentUser
-            ? data?.data?.filter((u) => u._id !== currentUser._id)
-            : data?.data;
-        setAllUsers(users);
-        if (currentUser) {
-            getConversations(currentUser._id, users);
-        }
-    }, [data]);
 
     useEffect(() => {
         arrivalMessage &&
@@ -58,59 +92,6 @@ const Messenger = () => {
         });
     }, [user]);
 
-    const getConversations = async (user_id, users = []) => {
-        try {
-            const response = await fetch(
-                'http://localhost:5000/conversations/' + user_id,
-                {
-                    method: 'GET',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                        authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-            let data = await response.json();
-            if (response.status === 200) {
-                setConversations(data);
-                const cUsers = data.map((c) => c.members);
-                const newConversation = users?.filter(
-                    (user) => !flatten(cUsers).includes(user._id)
-                );
-                setNewConversations(newConversation);
-            }
-        } catch (err) {
-            console.log(err);
-        }
-    };
-
-    const getMessages = async () => {
-        try {
-            const response = await fetch(
-                'http://localhost:5000/messages/' + currentChat?._id,
-                {
-                    method: 'GET',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                        authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-            let data = await response.json();
-            if (response.status === 200) {
-                setMessages(data);
-            }
-        } catch (err) {
-            console.log(err);
-        }
-    };
-
-    useEffect(() => {
-        getMessages();
-    }, [currentChat]);
-
     useEffect(() => {
         scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
@@ -120,24 +101,10 @@ const Messenger = () => {
             senderId: user._id,
             receiverId,
         };
-        // add new conversation.
         try {
-            const response = await fetch(
-                'http://localhost:5000/conversations',
-                {
-                    method: 'POST',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                        authorization: `Bearer ${token}`,
-                    },
-                    body: JSON.stringify(conversation),
-                }
-            );
-            let data = await response.json();
-            if (response.status === 200) {
-                setCurrentChat(data);
-                getConversations(user._id, allUsers);
+            const response = await addConversation(conversation);
+            if (response?.data) {
+                setCurrentChat(response.data);
             }
         } catch (err) {
             console.log(err);
@@ -163,18 +130,9 @@ const Messenger = () => {
         };
         socket.current.emit('sendMessage', messageBody);
         try {
-            const response = await fetch('http://localhost:5000/messages', {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify(message),
-            });
-            let data = await response.json();
-            if (response.status === 200) {
-                setMessages([...messages, data]);
+            const response = await addMessage(message);
+            if (response?.data) {
+                setMessages([...messages, response.data]);
             }
             setNewMessage('');
         } catch (err) {
@@ -182,13 +140,15 @@ const Messenger = () => {
         }
     };
 
-    if (isLoading) {
+    if (isLoading || isConversationsLoading || isMessagesLoading) {
         return (
             <div className="vh-100 vw-100 d-flex align-items-center justify-content-center">
                 Loading...
             </div>
         );
     }
+
+    if (error) return <h4 className="text-center">Something went wrong!</h4>;
 
     return (
         <>
@@ -292,5 +252,5 @@ const Messenger = () => {
             </div>
         </>
     );
-}
+};
 export default Messenger;

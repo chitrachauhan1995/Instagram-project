@@ -9,8 +9,6 @@ export const postsApi = createApi({
         baseUrl: 'http://localhost:5000/',
         prepareHeaders: (headers, { getState }) => {
             headers.set('Access-Control-Allow-Origin', '*');
-            headers.set('Accept', 'application/json');
-            headers.set('mode', 'no-cors');
             const token = Cookies.get('token');
             if (token) {
                 headers.set('authorization', `Bearer ${token}`);

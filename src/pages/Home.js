@@ -37,7 +37,7 @@ const Home = () => {
     if (data && !posts?.data?.length) {
         return <div className="text-center">No posts found!</div>;
     }
-    if (error) return <div className="text-center">An error has occurred!</div>;
+    if (error) return <h4 className="text-center">Something went wrong!</h4>;
 
     const handlePageChange = (event) => {
         setPage(event.selected + 1);

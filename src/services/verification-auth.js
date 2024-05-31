@@ -8,8 +8,6 @@ export const verificationAuthApi = createApi({
         baseUrl: 'http://localhost:5000/',
         prepareHeaders: (headers) => {
             headers.set('Access-Control-Allow-Origin', '*');
-            headers.set('Accept', 'application/json');
-            headers.set('mode', 'no-cors');
             return headers;
         },
     }),
