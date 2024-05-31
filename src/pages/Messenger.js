@@ -153,8 +153,8 @@ const Messenger = () => {
     return (
         <>
             <div className="messenger">
-                <div className="chatMenu">
-                    <div className="chatMenuWrapper">
+                <div className="chat-menu">
+                    <div className="chat-menu-wrapper">
                         {conversations?.length ? (
                             <div>
                                 <h3 className="chats-title m-0">Chats</h3>
@@ -200,7 +200,7 @@ const Messenger = () => {
                         )}
                     </div>
                 </div>
-                <div className="chatBox">
+                <div className="chat-box">
                     {currentChat && (
                         <div className="current-conversation">
                             <Conversation
@@ -211,10 +211,10 @@ const Messenger = () => {
                         </div>
                     )}
                     <hr className="m-0" />
-                    <div className="chatBoxWrapper">
+                    <div className="chat-box-wrapper">
                         {currentChat ? (
                             <>
-                                <div className="chatBoxTop">
+                                <div className="chat-box-top">
                                     {messages?.map((m, index) => (
                                         <div ref={scrollRef} key={index}>
                                             <Message
@@ -225,9 +225,9 @@ const Messenger = () => {
                                         </div>
                                     ))}
                                 </div>
-                                <div className="chatBoxBottom">
+                                <div className="chat-box-bottom">
                                     <textarea
-                                        className="chatMessageInput"
+                                        className="chat-message-input"
                                         placeholder="Type a message..."
                                         onChange={(e) =>
                                             setNewMessage(e.target.value)
@@ -235,7 +235,7 @@ const Messenger = () => {
                                         value={newMessage}
                                     />
                                     <button
-                                        className="chatSubmitButton"
+                                        className="btn action-button"
                                         onClick={handleSubmit}
                                     >
                                         Send
@@ -243,7 +243,7 @@ const Messenger = () => {
                                 </div>
                             </>
                         ) : (
-                            <span className="noConversationText">
+                            <span className="no-conversation-text">
                                 Open a conversation to start a chat.
                             </span>
                         )}

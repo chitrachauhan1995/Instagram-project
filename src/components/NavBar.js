@@ -64,8 +64,8 @@ export default function NavBar() {
     };
 
     return (
-        <header className="header mid d-flex justify-content-between align-items-center navbar">
-            <h4 className="postgram">Postgram</h4>
+        <header className="header d-flex justify-content-between align-items-center navbar">
+            <h4 className="postgram-title">Postgram</h4>
             {(location.pathname === '/home' ||
                 location.pathname === '/profile') && (
                 <div className="d-flex align-items-center justify-content-center search-feed">

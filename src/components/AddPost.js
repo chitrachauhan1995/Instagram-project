@@ -78,13 +78,13 @@ export default function AddPost({ toggleModal, post }) {
                 <div className="modal-content">
                     <div className="modal-header  d-flex align-items-center justify-content-between">
                         <h5 className="modal-title" id="exampleModalLabel">
-                            Add New Feed
+                            {post ? 'Update Feed' : 'Add New Feed'}
                         </h5>
                         <FontAwesomeIcon
                             icon={faTimesCircle}
                             onClick={() => toggleModal()}
                             size="2xl"
-                            color="#dee2e6"
+                            color="#6c757d"
                             className="cursor-pointer"
                         />
                     </div>
@@ -186,10 +186,10 @@ export default function AddPost({ toggleModal, post }) {
                                 </button>
                                 <button
                                     type="button"
-                                    className="btn btn-primary"
+                                    className="btn action-button"
                                     onClick={(e) => createPost(e)}
                                 >
-                                    Save changes
+                                    {post ? 'Update Feed' : 'Add New Feed'}
                                 </button>
                             </div>
                         </form>

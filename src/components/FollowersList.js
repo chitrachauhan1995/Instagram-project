@@ -112,7 +112,7 @@ export default function FollowersList() {
                                 </span>
                                 {user.followUser && (
                                     <button
-                                        className="btn follow-button"
+                                        className="btn action-button"
                                         onClick={() => followUser(user)}
                                     >
                                         Follow
@@ -147,7 +147,7 @@ export default function FollowersList() {
                                 </span>
                                 {!user.followUser && (
                                     <button
-                                        className="btn follow-button"
+                                        className="btn action-button"
                                         onClick={() => unFollowUser(user)}
                                     >
                                         UnFollow

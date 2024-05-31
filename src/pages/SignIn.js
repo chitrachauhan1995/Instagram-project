@@ -66,9 +66,9 @@ const SignIn = () => {
     return (
         <>
             {authMode === 'signup' ? (
-                <div className="form-container">
+                <div className="login-main-container">
                     <div className="d-flex flex-column w-30 text-center">
-                        <h4 className="postgram">Postgram</h4>
+                        <h4 className="postgram-title">Postgram</h4>
                         <p>Connect with friends and the world around you.</p>
                     </div>
                     <form
@@ -163,9 +163,9 @@ const SignIn = () => {
                 </div>
             ) : (
                 <div>
-                    <div className="form-container">
+                    <div className="login-main-container">
                         <div className="d-flex flex-column w-30 text-center">
-                            <h4 className="postgram">Postgram</h4>
+                            <h4 className="postgram-title">Postgram</h4>
                             <p>
                                 Connect with friends and the world around you.
                             </p>

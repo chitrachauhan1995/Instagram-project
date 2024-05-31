@@ -69,7 +69,7 @@ export default function EditProfile({ toggleModal, user }) {
                             icon={faTimesCircle}
                             onClick={() => toggleModal()}
                             size="2xl"
-                            color="#dee2e6"
+                            color="#6c757d"
                             className="cursor-pointer"
                         />
                     </div>
@@ -127,7 +127,7 @@ export default function EditProfile({ toggleModal, user }) {
                                     </small>
                                 </div>
                                 <div className="form-group mt-3">
-                                    <label>Upload Image</label>
+                                    <label>Upload Profile Photo</label>
                                     <div className="form-group mt-3">
                                         <input
                                             type="file"
@@ -152,47 +152,6 @@ export default function EditProfile({ toggleModal, user }) {
                                         )}
                                     </div>
                                 </div>
-                                <div className="form-group mt-3">
-                                    <label>Private</label>
-                                    <div className="radio">
-                                        <label>
-                                            <input
-                                                type="radio"
-                                                name="isPrivate"
-                                                value={true}
-                                                checked={
-                                                    formValues?.isPrivate ===
-                                                        true ||
-                                                    formValues?.isPrivate ===
-                                                        'true'
-                                                }
-                                                onChange={(e) =>
-                                                    handleChange(e)
-                                                }
-                                            />
-                                            Yes
-                                        </label>
-                                    </div>
-                                    <div className="radio">
-                                        <label>
-                                            <input
-                                                type="radio"
-                                                name="isPrivate"
-                                                value={false}
-                                                checked={
-                                                    formValues?.isPrivate ===
-                                                        false ||
-                                                    formValues?.isPrivate ===
-                                                        'false'
-                                                }
-                                                onChange={(e) =>
-                                                    handleChange(e)
-                                                }
-                                            />
-                                            No
-                                        </label>
-                                    </div>
-                                </div>
                                 <div className="modal-footer">
                                     <button
                                         type="button"
@@ -204,7 +163,7 @@ export default function EditProfile({ toggleModal, user }) {
                                     </button>
                                     <button
                                         type="submit"
-                                        className="btn btn-primary"
+                                        className="btn action-button"
                                     >
                                         Update Profile
                                     </button>
